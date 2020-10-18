@@ -1,6 +1,6 @@
 <template>
 <p>
-  home
+  主页
 </p>
 </template>
 
