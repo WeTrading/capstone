@@ -81,7 +81,12 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.loginForm.value)
-          this.$router.push('/home')
+          this.$store.dispatch('login', {
+            type: this.loginForm.type,
+            email: this.loginForm.value,
+            password: this.loginForm.password
+          })
+          // this.$router.push('/home')
           // 补充 dispatch.....
         } else {
           console.log('error submit!!')

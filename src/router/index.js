@@ -4,27 +4,57 @@ import Login from '../components/Login'
 import Register from '../components/register'
 import Home from '../components/home'
 import Start from '../components/start'
+import { auth } from '../firebase'
+
 Vue.use(Router)
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      redirect: '/start'
-    },
-    { path: '/start', component: Start },
-    { path: '/login', component: Login },
-    { path: '/home', component: Home },
-    { path: '/register', component: Register }
-  ]
-})
-/* const routes = [
-
+const routes = [
+  {
+    path: '/',
+    redirect: '/start'
+  },
+  {
+    path: '/login',
+    component: Login
+  },
+  {
+    path: '/register',
+    component: Register
+  },
+  {
+    path: '/start',
+    component: Start
+  },
+  {
+    path: '/home',
+    component: Home,
+    meta: {
+      requiresAuth: true
+    }
+  }
 ]
 
-const router = new VueRouter({
+const router = new Router({
   routes
 })
 
+// navigation guard to check for logged in users
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
+
+  if (requiresAuth && !auth.currentUser) {
+    next('/start')
+  } else {
+    next()
+  }
+})
+
+export default router
+
+/* const routes = [
+]
+const router = new VueRouter({
+  routes
+})
 export default router
 */

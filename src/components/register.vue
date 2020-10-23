@@ -1060,8 +1060,17 @@ export default {
     submitForm: function (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          console.log(this.form.value)
           alert('submit!')
-          this.$router.push('/home')
+          this.$store.dispatch('signup', {
+            email: this.form.email,
+            password: this.form.password,
+            name: this.form.name,
+            region: this.form.region,
+            telephone: this.form.telephone,
+            type: this.form.type
+          })
+          // this.$router.push('/home')
         //  补充xxxxxx
         } else {
           console.log('error submit!!')
