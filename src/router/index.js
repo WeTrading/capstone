@@ -4,6 +4,7 @@ import Login from '../components/Login'
 import Register from '../components/register'
 import Home from '../components/home'
 import Start from '../components/start'
+import AddItem from '../components/addItem'
 import { auth } from '../firebase'
 
 Vue.use(Router)
@@ -31,6 +32,10 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/addItem',
+    component: AddItem
   }
 ]
 

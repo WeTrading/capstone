@@ -1,12 +1,20 @@
 <template>
 <p>
-  主页
+   <v-app>
+    <v-content>
+      <AddItem/>
+    </v-content>
+  </v-app>
 </p>
 </template>
 
 <script>
+import AddItem from './addItem'
 export default {
-  name: 'home'
+  name: 'home',
+  components: {
+    AddItem
+  }
 }
 </script>
 
