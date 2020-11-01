@@ -5,14 +5,30 @@ import Register from '../components/register'
 import Home from '../components/home'
 import Start from '../components/start'
 import AddItem from '../components/addItem'
+import Header from '../components/header'
+import Main from '../components/home2'
+import Setting from '../components/setting'
+import Product from '../components/product'
 import { auth } from '../firebase'
 
 Vue.use(Router)
 
 const routes = [
   {
-    path: '/',
-    redirect: '/start'
+    path: '/homee',
+    component: Main
+  },
+  {
+    path: '/header',
+    component: Header
+  },
+  {
+    path: '/setting',
+    component: Setting
+  },
+  {
+    path: '/product',
+    component: Product
   },
   {
     path: '/login',

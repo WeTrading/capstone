@@ -7,14 +7,35 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userProfile: {}
+    userProfile: {},
+    isLogin: false
+  },
+  getters: {
+    getIsLogin: state => state.isLogin,
+    getCurrent: state => state.userProfile
   },
   mutations: {
     setUserProfile (state, val) {
-      state.userProfile = val
+      if (Object.keys(val).length > 0) {
+        state.userProfile = val
+        state.isLogin = true
+      } else {
+        state.userProfile = val
+        state.isLogin = false
+      }
     }
   },
   actions: {
+    async logout ({ commit }) {
+      try {
+        await fb.auth.signOut()
+        commit('setUserProfile', {})
+        // signed out
+      } catch (e) {
+        console.log(e)
+        // an error
+      }
+    },
     async login ({ dispatch }, form) {
       // sign user in
       const { user } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
