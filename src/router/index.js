@@ -40,7 +40,10 @@ const routes = [
   },
   {
     path: '/start',
-    component: Start
+    component: Start,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/home',

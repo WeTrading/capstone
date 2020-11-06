@@ -36,11 +36,15 @@
       </el-menu-item>
       <el-menu-item v-show="isLogin" >
         <i class = "el-icon-user-solid"></i>
-        <span slot="title">{{showuser()}}{{username}}</span>
+        <span slot="title">{{show_user()}}{{username}}</span>
       </el-menu-item>
       <el-menu-item index="/setting" v-show="isLogin">
         <i class="el-icon-setting"></i>
         <span slot="title">setting</span>
+      </el-menu-item>
+      <el-menu-item index="/"  @click="check_user">
+        <i class="el-icon-error"></i>
+        <span slot="title">User</span>
       </el-menu-item>
 
     </el-menu>
@@ -58,6 +62,15 @@ export default {
       isCollapse: false
     }
   },
+  created () {
+    this.$store.state.userProfile = window.sessionStorage.getItem('userProfile')
+    this.$store.state.isLogin = window.sessionStorage.getItem('isLogin')
+    window.addEventListener('beforeunload', () => {
+      window.sessionStorage.setItem('userProfile', this.$store.state.userProfile)
+      console.log(this.$store.state.isLogin)
+      window.sessionStorage.setItem('isLogin', this.$store.state.isLogin)
+    })
+  },
   computed: {
     isLogin: function () {
       return this.$store.getters.getIsLogin
@@ -67,21 +80,26 @@ export default {
     }
   },
   methods: {
+    check_user () {
+      const user = firebase.auth().currentUser
+      console.log(user)
+    },
     exit () {
+      this.$store.state.isLogin = false
       this.$store.dispatch('logout')
       console.log(this.$store.getters.getIsLogin)
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
     },
-    setuser () {
-      this.username = this.showuser()
-      console.log(this.showuser())
+    set_user () {
+      this.username = this.show_user()
+      console.log(this.show_user())
     },
-    showuser () {
+    show_user () {
       const user = firebase.auth().currentUser
       if (user) {
-        var that = this
+        const that = this
         cd.usersCollection.doc(user.uid).get().then(function (doc) {
           if (doc.exists) {
             console.log(doc.data().name)
