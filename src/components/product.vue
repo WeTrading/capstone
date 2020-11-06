@@ -34,9 +34,9 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  margin: auto;
-  margin-left: 250px;
-  margin-top: 100px;
+  //margin: auto;
+  //margin-left: 250px;
+  //margin-top: 100px;
 }
 .goods li{
   list-style-type: none;

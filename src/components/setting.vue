@@ -100,7 +100,7 @@ export default {
 }
 .container{
   background-color: #27434d;
-  width: 600px;
+  width: 700px;
   height: 500px;
   position: absolute;
   top: 0;
@@ -130,14 +130,14 @@ export default {
   line-height: 50px;
 }
 .container .right{
-  width: 450px;
+  width: 500px;
   height: 100%;
   background-color: white;
   float: right;
 }
 .container .right .ruleForm{
-  margin-left: 0px;
-  width: 350px;
+  margin-left:0;
+  width: 400px;
   padding-left: 30px;
   padding-top:30px;
 }
@@ -153,5 +153,4 @@ export default {
 .button2{
   float: right;
 }
-
 </style>
