@@ -29,6 +29,7 @@
 <script>
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import firebase from 'firebase'
+import * as fb from '../firebase'
 import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'addItem',
@@ -60,6 +61,19 @@ export default {
         const img = this.imgs[key]
         this.uploadImageData(img.name, img.data, this)
       }
+      // add this product info into user profile
+      this.addProductToUser()
+    },
+    async addProductToUser () {
+      const userProfile = await fb.usersCollection.doc(this.userID).get()
+      let oldSellList = []
+      if ('sellList' in userProfile) {
+        oldSellList = userProfile.sellList
+      }
+      oldSellList.push(this.productUUID)
+      fb.usersCollection.doc(this.userID).update({
+        sellList: oldSellList
+      })
     },
     uploadImageSuccess (formData, index, fileList) {
       const getUUID = require('uuid-by-string')
@@ -87,7 +101,8 @@ export default {
           thisPtr.productInfo[imgUUID] = {
             name: name,
             highlight: thisPtr.imgs[imgUUID].highlight,
-            imageURL: imageURL
+            imageURL: imageURL,
+            sold: false
           }
           console.log(thisPtr.productInfo)
           firebase.database().ref('ProductInfo/' + thisPtr.productUUID).update(thisPtr.productInfo)
