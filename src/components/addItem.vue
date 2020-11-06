@@ -1,108 +1,138 @@
 <template>
-  <v-container>
-    <v-layout row>
-      <v-flex class="text-center font-weight-black">
-        <h1>Upload a photo</h1>
-      </v-flex>
-    </v-layout>
-
-    <v-layout row>
-      <v-flex md6 offset-sm3>
-        <div>
-          <div>
-            <v-btn @click="click1">choose photo</v-btn>
-            <input
-              type="file"
-              ref="input1"
-              style="display: none"
-              @change="previewImage"
-              accept="image/*"
-            />
-          </div>
-
-          <div v-if="imageData != null">
-            <img class="preview" height="268" width="356" :src="img1" />
-            <br />
-          </div>
-        </div>
-      </v-flex>
-    </v-layout>
-
-    <v-layout row>
-      <v-flex md6 offset-sm3 class="text-center">
-        <v-text-field solo v-model="caption" label="Caption goes here">
-        </v-text-field>
-      </v-flex>
-    </v-layout>
-    <v-layout row>
-      <v-flex class="text-center">
-        <v-btn color="pink" @click="create">upload</v-btn>
-      </v-flex>
-    </v-layout>
+   <v-container>
+      <v-layout row>
+        <v-flex md6 offset-sm3 class="text-center">
+          <vue-upload-multiple-image
+          @upload-success='uploadImageSuccess'
+          @before-remove='beforeRemove'
+          @edit-image='editImage'
+          :data-images='images'
+          :dragText='dragText'
+          :idUpload='idUpload'
+          :editUpload='editUpload'
+          :browseText='browseText'
+          :primaryText='primaryText'
+          :markIsPrimaryText='markIsPrimaryText'
+          :popupText='popupText'
+          :dropText='dropText'
+          ></vue-upload-multiple-image>
+        </v-flex>
+      </v-layout>
+      <v-layout row>
+        <v-flex md6 offset-sm3 class="text-center font-weight-black">
+          <button @click='upload'>Upload</button>
+        </v-flex>
+      </v-layout>
   </v-container>
 </template>
 
 <script>
+import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import firebase from 'firebase'
+import { v4 as uuidv4 } from 'uuid'
 export default {
-  name: 'AddItem',
+  name: 'addItem',
+  components: {
+    VueUploadMultipleImage
+  },
   data () {
     return {
-      caption: '',
-      img1: '',
-      imageData: null
+      images: [],
+      dragText: 'Drag images or click',
+      idUpload: 'idUpload',
+      editUpload: 'editUpload',
+      browseText: 'Click me',
+      primaryText: 'Highlight',
+      markIsPrimaryText: 'Mark as highlight',
+      popupText: 'You can only highlight one photo',
+      dropText: 'Drop here',
+      productUUID: uuidv4(),
+      userID: firebase.auth().currentUser.uid,
+      imgs: {},
+      productInfo: {}
     }
   },
   methods: {
-    create () {
-      const post = {
-        photo: this.img1,
-        caption: this.caption
+    upload () {
+      firebase.database().ref('ProductInfo/' + this.productUUID).set({})
+      this.productInfo.userID = this.userID
+      for (const key in this.imgs) {
+        const img = this.imgs[key]
+        this.uploadImageData(img.name, img.data, this)
       }
-      firebase
-        .database()
-        .ref('PhotoGallery')
-        .push(post)
-        .then((response) => {
-          console.log(response)
+    },
+    uploadImageSuccess (formData, index, fileList) {
+      const getUUID = require('uuid-by-string')
+      const img = fileList[index]
+      this.imgs[getUUID(img.name)] = {
+        name: img.name,
+        data: formData.get('file'),
+        highlight: img.highlight
+      }
+      console.log('Selected', this.imgs[getUUID(img.name)])
+    },
+    uploadImageData (name, data, thisPtr) {
+      console.log('Begin to upload', name)
+      const uploadTask = firebase.storage().ref().child(this.productUUID + '/' + name).put(data)
+      uploadTask.on('state_changed', function (snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        console.log('Upload is ' + progress + '% done')
+      }, function (error) {
+        console.log(error)
+      }, function () {
+        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          const getUUID = require('uuid-by-string')
+          const imgUUID = getUUID(name)
+          console.log(name, 'available at', downloadURL)
+          thisPtr.productInfo[imgUUID] = {
+            name: name,
+            highlight: thisPtr.imgs[imgUUID].highlight,
+            downloadURL: downloadURL
+          }
+          console.log(thisPtr.productInfo)
+          firebase.database().ref('ProductInfo/' + thisPtr.productUUID).update(thisPtr.productInfo)
         })
-        .catch((err) => {
-          console.log(err)
-        })
+      })
     },
-    click1 () {
-      this.$refs.input1.click()
+    beforeRemove (index, done, fileList) {
+      console.log('index', index, fileList)
+      const r = confirm('Remove image')
+      if (r === true) {
+        done()
+      }
     },
-    previewImage (event) {
-      this.uploadValue = 0
-      this.img1 = null
-      this.imageData = event.target.files[0]
-      this.onUpload()
-    },
-    onUpload () {
-      this.img1 = null
-      const storageRef = firebase
-        .storage()
-        .ref(`${this.imageData.name}`)
-        .put(this.imageData)
-      storageRef.on(
-        'state_changed',
-        (snapshot) => {
-          this.uploadValue =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        },
-        (error) => {
-          console.log(error.message)
-        },
-        () => {
-          this.uploadValue = 100
-          storageRef.snapshot.ref.getDownloadURL().then((url) => {
-            this.img1 = url
-            console.log(this.img1)
-          })
-        }
-      )
+    editImage (formData, index, fileList) {
+      console.log('edit data', formData, index, fileList)
     }
   }
 }
 </script>
+
+<style scoped>
+#my-strictly-unique-vue-upload-multiple-image {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+h1, h2 {
+  font-weight: normal;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+a {
+  color: #42b983;
+}
+</style>
