@@ -80,14 +80,14 @@ export default {
       }, function (error) {
         console.log(error)
       }, function () {
-        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+        uploadTask.snapshot.ref.getDownloadURL().then(function (imageURL) {
           const getUUID = require('uuid-by-string')
           const imgUUID = getUUID(name)
-          console.log(name, 'available at', downloadURL)
+          console.log(name, 'available at', imageURL)
           thisPtr.productInfo[imgUUID] = {
             name: name,
             highlight: thisPtr.imgs[imgUUID].highlight,
-            downloadURL: downloadURL
+            imageURL: imageURL
           }
           console.log(thisPtr.productInfo)
           firebase.database().ref('ProductInfo/' + thisPtr.productUUID).update(thisPtr.productInfo)
