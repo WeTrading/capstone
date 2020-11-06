@@ -25,7 +25,7 @@
             <el-button type="primary" @click="login('loginForm')">LogIn</el-button>
           </span>
           <span class="href">
-            <a href="#/empty">Forget Password</a>
+            <a href="#/resetPass">Forget Password</a>
           </span>
         </el-form-item>
       </el-form>

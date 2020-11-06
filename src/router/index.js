@@ -4,6 +4,7 @@ import Login from '../components/Login'
 import Register from '../components/register'
 import Home from '../components/home'
 import Start from '../components/start'
+import ResetPassword from '../components/resetPass'
 import { auth } from '../firebase'
 
 Vue.use(Router)
@@ -24,6 +25,10 @@ const routes = [
   {
     path: '/start',
     component: Start
+  },
+  {
+    path: '/resetPass',
+    component: ResetPassword
   },
   {
     path: '/home',

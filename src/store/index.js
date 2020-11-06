@@ -22,6 +22,16 @@ export default new Vuex.Store({
       // fetch user profile and set in state
       dispatch('fetchUserProfile', user)
     },
+    async resetpass ({ dispatch }, form) {
+      // send password reset email
+      await fb.auth.sendPasswordResetEmail(form.email).then(() => {
+        alert('We have sent an email to your email address, please follow the link to reset your password.')
+        // go back to login page
+        router.push('/login')
+      }).catch((error) => {
+        alert(error)
+      })
+    },
     async signup ({ dispatch }, form) {
       // sign user up
       const { user } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password)
