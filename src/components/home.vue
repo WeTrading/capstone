@@ -2,18 +2,18 @@
 <p>
    <v-app>
     <v-content>
-      <AddItem/>
+      <!-- <AddItem/> -->
     </v-content>
   </v-app>
 </p>
 </template>
 
 <script>
-import AddItem from './addItem'
+// import AddItem from './addItem'
 export default {
   name: 'home',
   components: {
-    AddItem
+    // AddItem
   }
 }
 </script>
