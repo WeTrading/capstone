@@ -2,9 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/Login'
 import Register from '../components/register'
-import Home from '../components/home'
+// import Home from '../components/home'
 import Start from '../components/start'
-// import AddItem from '../components/addItem'
+import AddItem from '../components/addItem'
 import Header from '../components/header'
 import Main from '../components/home2'
 import Setting from '../components/setting'
@@ -59,7 +59,7 @@ const routes = [
   },
   {
     path: '/addItem',
-    component: Home
+    component: AddItem
   }
 ]
 

@@ -8,7 +8,7 @@
       </el-menu-item>
       <el-menu-item index="/addItem" v-show="isLogin">
         <i class="el-icon-document"></i>
-        <span slot="title">AddImages</span>
+        <span slot="title">Sell Product</span>
       </el-menu-item>
       <el-menu-item index = "/message" v-show="isLogin">
         <i class="el-icon-message-solid"></i>
@@ -16,7 +16,7 @@
       </el-menu-item>
       <el-menu-item index = "/product">
         <i class="el-icon-s-grid"></i>
-        <span slot="title">ProductList</span>
+        <span slot="title">Store</span>
       </el-menu-item>
       <el-menu-item index = "/cart" v-show="isLogin">
         <i class="el-icon-shopping-cart-1"></i>

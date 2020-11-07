@@ -1,5 +1,12 @@
 <template>
    <v-container>
+      Title:
+      <br>
+      <input v-model="title" placeholder="add title">
+      <br>
+      Description:
+      <br>
+      <textarea v-model="description" placeholder="add description"></textarea>
       <v-layout row>
         <v-flex md6 offset-sm3 class="text-center">
           <vue-upload-multiple-image
@@ -57,6 +64,9 @@ export default {
     upload () {
       firebase.database().ref('ProductInfo/' + this.productUUID).set({})
       this.productInfo.userID = this.userID
+      this.productInfo.title = this.title
+      this.productInfo.description = this.description
+      this.productInfo.sold = false
       for (const key in this.imgs) {
         const img = this.imgs[key]
         this.uploadImageData(img.name, img.data, this)
@@ -66,14 +76,18 @@ export default {
     },
     async addProductToUser () {
       const userProfile = await fb.usersCollection.doc(this.userID).get()
-      let oldSellList = []
-      if ('sellList' in userProfile) {
-        oldSellList = userProfile.sellList
+      const data = userProfile.data()
+      if ('sellList' in data) {
+        const oldSellList = data.sellList
+        await oldSellList.push(this.productUUID)
+        fb.usersCollection.doc(this.userID).update({
+          sellList: oldSellList
+        })
+      } else {
+        fb.usersCollection.doc(this.userID).update({
+          sellList: [this.productUUID]
+        })
       }
-      oldSellList.push(this.productUUID)
-      fb.usersCollection.doc(this.userID).update({
-        sellList: oldSellList
-      })
     },
     uploadImageSuccess (formData, index, fileList) {
       const getUUID = require('uuid-by-string')
@@ -101,8 +115,7 @@ export default {
           thisPtr.productInfo[imgUUID] = {
             name: name,
             highlight: thisPtr.imgs[imgUUID].highlight,
-            imageURL: imageURL,
-            sold: false
+            imageURL: imageURL
           }
           console.log(thisPtr.productInfo)
           firebase.database().ref('ProductInfo/' + thisPtr.productUUID).update(thisPtr.productInfo)
