@@ -14,7 +14,7 @@
         <i class="el-icon-message-solid"></i>
         <span slot="title">Message</span>
       </el-menu-item>
-      <el-menu-item index = "/product" v-show="isLogin">
+      <el-menu-item index = "/product">
         <i class="el-icon-s-grid"></i>
         <span slot="title">ProductList</span>
       </el-menu-item>

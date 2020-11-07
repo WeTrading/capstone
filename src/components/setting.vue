@@ -69,6 +69,7 @@ export default {
       if (!this.eflag) {
         const user = firebase.auth().currentUser
         if (user) {
+          cd.usersCollection.doc(user.uid).update({ email: this.form.email })
           user.updateEmail(this.form.email).then(function () {
 
           }).catch(function (error) {
