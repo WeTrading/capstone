@@ -36,7 +36,7 @@ export default {
   methods: {
     getdata () {
       const that = this
-      var store = firebase.database().ref('ProductInfo')
+      var store = firebase.database().ref('Sell')
       store.on('value', function (snapshot) {
         that.countvalue = snapshot.numChildren()
         snapshot.forEach(function (childSnapshot) {
@@ -87,7 +87,7 @@ export default {
   right: 0;
   bottom: 0;
   margin-left: 150px;
-  //margin-top: 100px;
+  /* margin-top: 100px; */
 }
 .goods_continer{
   height: 100%;

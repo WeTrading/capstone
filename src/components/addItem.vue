@@ -1,14 +1,7 @@
 <template>
    <v-container>
-      Title:
-      <br>
-      <input v-model="title" placeholder="add title">
-      <br>
-      Description:
-      <br>
-      <textarea v-model="description" placeholder="add description"></textarea>
       <v-layout row>
-        <v-flex md6 offset-sm3 class="text-center">
+        <v-flex md3 offset-sm3 class="text-center">
           <vue-upload-multiple-image
           @upload-success='uploadImageSuccess'
           @before-remove='beforeRemove'
@@ -26,8 +19,52 @@
         </v-flex>
       </v-layout>
       <v-layout row>
-        <v-flex md6 offset-sm3 class="text-center font-weight-black">
-          <button @click='upload'>Upload</button>
+        <v-flex md6 class="text-center">
+          <v-row>
+          <v-col cols="4">
+            <v-text-field
+              ref="title"
+              v-model="title"
+              :rules="[
+                () => !!title || 'This field is required',
+                () => !!title && title.length <=20 || 'Title must be less than 20 characters'
+              ]"
+              placeholder="Title"
+              counter=20
+              required
+            ></v-text-field>
+          </v-col>
+          </v-row>
+        </v-flex>
+      </v-layout>
+      <br/>
+
+      <v-layout row>
+        <v-flex md4 class="text-center">
+          <v-textarea
+            label="Description"
+            auto-grow
+            outlined
+            rows="3"
+            row-height="15"
+            v-model="description"
+            :rules="[
+              () => !!description || 'This field is required',
+              () => !!description && description.length <=200 || 'Description must be less than 100 characters'
+            ]"
+            counter=200
+            required
+          ></v-textarea>
+        </v-flex>
+      </v-layout>
+      <br>
+      <v-layout row>
+        <v-flex md6 class="text-center">
+          <v-btn
+            :disabled="isDisabled"
+            elevation="4"
+            @click="upload"
+          >upload</v-btn>
         </v-flex>
       </v-layout>
   </v-container>
@@ -57,16 +94,24 @@ export default {
       productUUID: uuidv4(),
       userID: firebase.auth().currentUser.uid,
       imgs: {},
-      productInfo: {}
+      productInfo: {},
+      title: '',
+      description: ''
+    }
+  },
+  computed: {
+    isDisabled: function () {
+      return !this.title || !this.description
     }
   },
   methods: {
     upload () {
-      firebase.database().ref('ProductInfo/' + this.productUUID).set({})
+      firebase.database().ref('Sell/' + this.productUUID).set({})
       this.productInfo.userID = this.userID
       this.productInfo.title = this.title
       this.productInfo.description = this.description
       this.productInfo.sold = false
+      this.productInfo.uploadTime = Date.now()
       for (const key in this.imgs) {
         const img = this.imgs[key]
         this.uploadImageData(img.name, img.data, this)
@@ -118,7 +163,7 @@ export default {
             imageURL: imageURL
           }
           console.log(thisPtr.productInfo)
-          firebase.database().ref('ProductInfo/' + thisPtr.productUUID).update(thisPtr.productInfo)
+          firebase.database().ref('Sell/' + thisPtr.productUUID).update(thisPtr.productInfo)
         })
       })
     },
