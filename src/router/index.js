@@ -9,6 +9,7 @@ import Header from '../components/header'
 import Main from '../components/home2'
 import Setting from '../components/setting'
 import Product from '../components/product'
+import ProductDetail from '../components/productdetail'
 import { auth } from '../firebase'
 
 Vue.use(Router)
@@ -34,6 +35,10 @@ const routes = [
   {
     path: '/product',
     component: Product
+  },
+  {
+    path: '/product/:id',
+    component: ProductDetail
   },
   {
     path: '/login',
