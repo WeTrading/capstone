@@ -10,6 +10,7 @@ import Main from '../components/home2'
 import Setting from '../components/setting'
 import Product from '../components/product'
 import { auth } from '../firebase'
+import AddComment from '../components/addComment'
 
 Vue.use(Router)
 
@@ -60,6 +61,10 @@ const routes = [
   {
     path: '/addItem',
     component: AddItem
+  },
+  {
+    path: '/addComment',
+    component: AddComment
   }
 ]
 

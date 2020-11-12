@@ -50,7 +50,7 @@
             v-model="description"
             :rules="[
               () => !!description || 'This field is required',
-              () => !!description && description.length <=200 || 'Description must be less than 100 characters'
+              () => !!description && description.length <=200 || 'Description must be less than 200 characters'
             ]"
             counter=200
             required
