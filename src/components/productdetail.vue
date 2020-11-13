@@ -17,6 +17,7 @@
         </div>
       </li>
     </ul>
+    <el-button round @click="jump">Add To Cart</el-button>
     <h2>Discussion</h2>
     <!--
       add comments here
@@ -26,6 +27,7 @@
 
 <script>
 import firebase from 'firebase'
+// import * as fb from "@/firebase";
 export default {
   name: 'productdetail',
   data () {
@@ -34,7 +36,8 @@ export default {
       title: {},
       description: {},
       userID: {},
-      uploadTime: {}
+      uploadTime: {},
+      currentUSer: ''
     }
   },
   created () {
@@ -60,6 +63,42 @@ export default {
         }
       })
       console.log(this.product)
+    },
+    jump: function () {
+      const user = firebase.auth().currentUser
+      if (user) {
+        this.currentUSer = user.uid
+        var that = this
+        var database = firebase.database().ref('Cart/')
+        var record = 0
+        var number = 0
+        database.on('value', function (snapshot) {
+          var children = snapshot.hasChild(that.currentUSer)
+          if (children) {
+            var grand = snapshot.child(that.currentUSer).hasChild(that.$route.params.id)
+            if (grand) {
+              record = 2
+              number = snapshot.child(that.currentUSer).child(that.$route.params.id).val().amount + 1
+            } else {
+              record = 3
+            }
+          } else {
+            record = 4
+          }
+        })
+        console.log(record)
+        if (record === 2) {
+          console.log(number)
+          firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).set({ amount: number })
+        } else if (record === 3 || record === 4) {
+          firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).set({
+            amount: 1
+          })
+        }
+        this.$router.push({ path: '/cart' })
+      } else {
+        alert('Login First')
+      }
     }
   }
 }

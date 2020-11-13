@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/Login'
 import Register from '../components/register'
+import Cart from '../components/cart'
+import empty from '../components/empty'
 // import Home from '../components/home'
 import Start from '../components/start'
 import AddItem from '../components/addItem'
@@ -19,6 +21,10 @@ const routes = [
     path: '/',
     redirect: '/product',
     component: Product
+  },
+  {
+    path: '/empty',
+    component: empty
   },
   {
     path: '/homee',
@@ -39,6 +45,10 @@ const routes = [
   {
     path: '/product/:id',
     component: ProductDetail
+  },
+  {
+    path: '/cart',
+    component: Cart
   },
   {
     path: '/login',
