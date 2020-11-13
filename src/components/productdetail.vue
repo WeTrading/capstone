@@ -19,9 +19,7 @@
     </ul>
     <el-button round @click="jump">Add To Cart</el-button>
     <h2>Discussion</h2>
-    <!--
-      add comments here
-    -->
+    <displayComment :productID='productID'></displayComment>
     <add-comment :userID='userID' :productID='productID' :sold="true"></add-comment>
   </article>
 </template>
@@ -29,9 +27,9 @@
 <script>
 import firebase from 'firebase'
 import addComment from './addComment.vue'
-// import * as fb from "@/firebase";
+import displayComment from './displayComments.vue'
 export default {
-  components: { addComment },
+  components: { addComment, displayComment },
   name: 'productdetail',
   data () {
     return {
