@@ -17,16 +17,22 @@
         </div>
       </li>
     </ul>
-    <h2>Discussion</h2>
+    <h2>Comments</h2>
+    <!--
+      display comments here
+    -->
     <!--
       add comments here
     -->
+    <add-comment :userID='userID' :productID='productID' :sold="true"></add-comment>
   </article>
 </template>
 
 <script>
 import firebase from 'firebase'
+import addComment from './addComment.vue'
 export default {
+  components: { addComment },
   name: 'productdetail',
   data () {
     return {
@@ -34,7 +40,8 @@ export default {
       title: {},
       description: {},
       userID: {},
-      uploadTime: {}
+      uploadTime: {},
+      productID: {}
     }
   },
   created () {
@@ -44,6 +51,8 @@ export default {
     loaddata () {
       const that = this
       var store = firebase.database().ref('Sell/' + this.$route.params.id)
+      console.log('Product ID:' + this.$route.params.id)
+      that.productID = this.$route.params.id
       store.on('value', function (snapshot) {
         that.title = snapshot.val().title
         that.description = snapshot.val().description

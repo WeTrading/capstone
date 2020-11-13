@@ -10,10 +10,6 @@
         <i class="el-icon-document"></i>
         <span slot="title">Sell Product</span>
       </el-menu-item>
-      <el-menu-item index="/addComment" v-show="isLogin">
-        <i class="el-icon-document"></i>
-        <span slot="title">Add Comment (testing)</span>
-      </el-menu-item>
       <el-menu-item index = "/message" v-show="isLogin">
         <i class="el-icon-message-solid"></i>
         <span slot="title">Message</span>

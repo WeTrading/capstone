@@ -1,15 +1,15 @@
 <template>
     <v-container>
         <v-textarea
-            label="Description"
+            label="Comment"
             auto-grow
             outlined
             rows="3"
             row-height="15"
-            v-model="comment_content"
+            v-model="commentContent"
             :rules="[
-              () => !!comment_content || 'This field is required',
-              () => !!comment_content && comment_content.length <=200 || 'Comment must be less than 200 characters'
+              () => !!commentContent || 'This field is required',
+              () => !!commentContent && commentContent.length <=200 || 'Comment must be less than 200 characters'
             ]"
             counter=200
             required
@@ -17,46 +17,80 @@
         <v-btn
         :disabled="isDisabled"
         elevation="4"
-        @click="post_comment"
+        @click="postComment"
         >Add Comment</v-btn>
     </v-container>
 </template>
 
 <script>
 import firebase from 'firebase'
+import * as fb from '../firebase'
 import { v4 as uuidv4 } from 'uuid'
+// import { component } from 'vue/types/umd'
 export default {
   name: 'addComment',
   data () {
     return {
-      product_uuid: null,
-      comment_time: null,
-      comment_content: null,
-      comment_uuid: uuidv4()
+      commentContent: null
     }
   },
-  props: [
-    'user_uuid'
-  ],
+  props: {
+    userID: {
+      type: String,
+      required: true
+    },
+    productID: {
+      type: String,
+      required: true
+    },
+    sold: {
+      type: Boolean,
+      required: true
+    }
+  },
   computed: {
     isDisabled: function () {
-      return !this.comment_content
+      return !this.commentContent
     }
   },
   methods: {
-    postComment () {
-      firebase.database().ref('Sell/' + this.productUUID).set({})
-      this.productInfo.userID = this.userID
-      this.productInfo.title = this.title
-      this.productInfo.description = this.description
-      this.productInfo.sold = false
-      this.productInfo.uploadTime = Date.now()
-      for (const key in this.imgs) {
-        const img = this.imgs[key]
-        this.uploadImageData(img.name, img.data, this)
+    async postComment () {
+      const commentID = uuidv4()
+      console.log({
+        userID: this.userID,
+        productID: this.productID,
+        commentContent: this.commentContent,
+        commentID: commentID
+      })
+      firebase.database().ref('Comments/' + commentID).set({
+        userID: this.userID,
+        productID: this.productID,
+        commentContent: this.commentContent,
+        commentID: commentID,
+        commentTime: Date.now()
+      })
+      // Add commentID to user profile
+      const userProfile = await fb.usersCollection.doc(this.userID).get()
+      const data = userProfile.data()
+      if ('comments' in data) {
+        const oldComments = data.comments
+        await oldComments.push(commentID)
+        fb.usersCollection.doc(this.userID).update({
+          comments: oldComments
+        })
+      } else {
+        fb.usersCollection.doc(this.userID).update({
+          comments: [commentID]
+        })
       }
-      // add this product info into user profile
-      this.addProductToUser()
+      // Add commentID to product profile
+      let productPath = 'Sell/'
+      if (this.sold !== true) {
+        productPath = 'Sold/'
+      }
+      const updates = {}
+      updates['/comments/' + commentID] = true
+      firebase.database().ref(productPath + this.productID).update(updates)
     }
   }
 }
