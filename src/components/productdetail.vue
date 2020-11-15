@@ -39,7 +39,8 @@ export default {
       userID: {},
       uploadTime: {},
       productID: {},
-      currentUSer: ''
+      currentUSer: '',
+      info: ''
     }
   },
   created () {
@@ -47,6 +48,7 @@ export default {
   },
   methods: {
     loaddata () {
+      this.info = this.$route.params.id
       const that = this
       var store = firebase.database().ref('Sell/' + this.$route.params.id)
       console.log('Product ID:' + this.$route.params.id)
@@ -79,10 +81,12 @@ export default {
         database.on('value', function (snapshot) {
           var children = snapshot.hasChild(that.currentUSer)
           if (children) {
-            var grand = snapshot.child(that.currentUSer).hasChild(that.$route.params.id)
+            // var grand = snapshot.child(that.currentUSer).hasChild(that.$route.params.id)
+            var grand = snapshot.child(that.currentUSer).hasChild(that.info)
             if (grand) {
               record = 2
-              number = snapshot.child(that.currentUSer).child(that.$route.params.id).val().amount + 1
+              // number = snapshot.child(that.currentUSer).child(that.$route.params.id).val().amount
+              number = parseInt(snapshot.child(that.currentUSer).child(that.info).val().amount + 1)
             } else {
               record = 3
             }
@@ -90,18 +94,24 @@ export default {
             record = 4
           }
         })
-        console.log(record)
         if (record === 2) {
-          console.log(number)
-          firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).set({ amount: number })
+          firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).update({ amount: number })
         } else if (record === 3 || record === 4) {
           firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).set({
             amount: 1
           })
         }
-        this.$router.push({ path: '/cart' })
+        this.$message({
+          showClose: true,
+          message: 'Add to Cart',
+          type: 'success'
+        })
       } else {
-        alert('Login First')
+        this.$message({
+          showClose: true,
+          message: 'Login First Please',
+          type: 'warning'
+        })
       }
     }
   }
@@ -109,5 +119,4 @@ export default {
 </script>
 
 <style>
-
 </style>
