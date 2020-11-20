@@ -60,7 +60,7 @@ export default {
         that.uploadTime = snapshot.val().uploadTime
         var pro
         for (pro in snapshot.val()) {
-          if (pro !== 'userID' && pro !== 'title' && pro !== 'uploadTime' && pro !== 'description') {
+          if (pro !== 'userID' && pro !== 'title' && pro !== 'uploadTime' && pro !== 'description' && pro !== 'sold' && pro !== 'amount' && pro !== 'comments') {
             var variable = {}
             variable.name = snapshot.val()[pro].name
             variable.href = snapshot.val()[pro].imageURL
