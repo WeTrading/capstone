@@ -73,7 +73,7 @@ export default {
           that.productlist.push(variable)
         })
       })
-      console.log(this.productlist)
+      // console.log(this.productlist)
     },
     handleCurrentChange (val) {
       this.currentpage = val
