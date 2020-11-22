@@ -66,6 +66,7 @@ export default {
       const that = this
       var store = firebase.database().ref('Sell/' + that.productID + '/comments')
       store.on('value', function (snapshot) {
+        var tempcommentlist = []
         that.countvalue = snapshot.numChildren()
         snapshot.forEach(function (childSnapshot) {
           var variable = {}
@@ -77,9 +78,10 @@ export default {
             variable.userID = snapshot2.val().userID
             variable.commentContent = snapshot2.val().commentContent
             variable.commentTime = snapshot2.val().commentTime
-            that.commentlist.push(variable)
+            tempcommentlist.push(variable)
           })
         })
+        that.commentlist = tempcommentlist
       })
       console.log(this.commentlist)
     },
