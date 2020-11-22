@@ -29,7 +29,7 @@
         </tbody></table>
     </div>
     <div class="cart-product-info">
-      <a class="btn-buy fr" href="javascript:;">Check Out</a>
+      <a class="btn-buy fr" href="javascript:;" @click="checkout">Check Out</a>
     </div>
   </div>
 </template>
@@ -50,6 +50,8 @@ export default {
     this.getdata()
   },
   methods: {
+    checkout () {
+    },
     jump (key) {
       var store = firebase.database().ref('Cart/' + this.userinfo + '/' + key)
       store.remove()

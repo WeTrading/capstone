@@ -1,7 +1,34 @@
 <template>
     <div>
     <li v-for="item in commentlist.slice((currentpage-1)*pagesize,currentpage*pagesize)" :key="item.commentID">
-        UserID:{ {{item.userID}} }, UserComment: { {{item.commentContent}} }, Comment Time: { {{item.commentTime}} }
+        <v-flex md8 offset-sm3 class="text-center">
+        <v-card
+            elevation="2"
+            outlined
+            shaped
+            >
+              <v-layout col>
+                <v-avatar
+                  color="teal"
+                >
+                    <img
+                        src="https://cdn.vuetifyjs.com/images/john.jpg"
+                        alt="John"
+                    >
+                </v-avatar>
+              <v-card-subtitle> User ID: {{item.userID}}</v-card-subtitle>
+              </v-layout>
+              <v-card-text> Comments: {{item.commentContent}}</v-card-text>
+              <v-card-actions>
+              <v-btn
+                text
+                color="teal accent-4"
+              >
+              Reply
+              </v-btn>
+              </v-card-actions>
+        </v-card>
+        </v-flex>
     </li>
     <el-pagination
         @current-change="handleCurrentChange"

@@ -38,7 +38,15 @@
         </v-flex>
       </v-layout>
       <br/>
-
+      <v-layout row>
+        <v-flex md4 class="text-center">
+            <input v-model.number="price" required placeholder="Price" type="number">
+        </v-flex>
+        <v-flex md4 class="text-center">
+            <input v-model.number="amount" required placeholder="Amount" type="number">
+        </v-flex>
+      </v-layout>
+      <br>
       <v-layout row>
         <v-flex md4 class="text-center">
           <v-textarea
@@ -96,12 +104,14 @@ export default {
       imgs: {},
       productInfo: {},
       title: '',
-      description: ''
+      description: '',
+      amount: '',
+      price: ''
     }
   },
   computed: {
     isDisabled: function () {
-      return !this.title || !this.description
+      return !this.title || !this.description || !this.amount || !this.price
     }
   },
   methods: {
@@ -112,6 +122,8 @@ export default {
       this.productInfo.description = this.description
       this.productInfo.sold = false
       this.productInfo.uploadTime = Date.now()
+      this.productInfo.amount = this.amount
+      this.productInfo.price = this.price
       for (const key in this.imgs) {
         const img = this.imgs[key]
         this.uploadImageData(img.name, img.data, this)
