@@ -5,9 +5,6 @@
           <div class="bg">
             <img :src="item.href[item.currentindex]" width="400px" height="400px">
           </div>
-          <!--
-          <div class="info"><a href="https://google.com">{{item.title}}</a></div>
-          -->
           <div>
             <router-link :to="'/product/' + item.key" class="btn btn-primary">{{item.title}}</router-link>
           </div>

@@ -2,7 +2,7 @@
 <div class="box">
   <div class="login_container">
     <div class="header">
-      <H1>XXX Trading Site</H1>
+      <H1>WeTrading</H1>
     </div>
     <div class="left">
       <p>WELCOME BACK</p>
@@ -50,9 +50,6 @@ export default {
         },
         {
           type: 'Telephone'
-        },
-        {
-          type: 'Username'
         }
       ],
       rules: {
