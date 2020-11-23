@@ -55,14 +55,14 @@ export default {
       var store = firebase.database().ref('Sell/' + this.$route.params.id)
       console.log('Product ID:' + this.$route.params.id)
       that.productID = this.$route.params.id
-      store.on('value', function (snapshot) {
+      store.once('value', function (snapshot) {
         that.title = snapshot.val().title
         that.description = snapshot.val().description
         that.userID = snapshot.val().userID
         that.uploadTime = snapshot.val().uploadTime
         var pro
         for (pro in snapshot.val()) {
-          if (pro !== 'userID' && pro !== 'title' && pro !== 'uploadTime' && pro !== 'description') {
+          if (pro !== 'userID' && pro !== 'title' && pro !== 'uploadTime' && pro !== 'description' && pro !== 'sold' && pro !== 'price' && pro !== 'comments' && pro !== 'amount') {
             var variable = {}
             variable.name = snapshot.val()[pro].name
             variable.href = snapshot.val()[pro].imageURL

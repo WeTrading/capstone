@@ -25,11 +25,17 @@ const routes = [
   },
   {
     path: '/message',
-    component: Message
+    component: Message,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/empty',
-    component: empty
+    component: empty,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/homee',
@@ -41,7 +47,10 @@ const routes = [
   },
   {
     path: '/setting',
-    component: Setting
+    component: Setting,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/product',
@@ -56,7 +65,10 @@ const routes = [
   },
   {
     path: '/cart',
-    component: Cart
+    component: Cart,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/login',
@@ -68,10 +80,7 @@ const routes = [
   },
   {
     path: '/start',
-    component: Start,
-    meta: {
-      requiresAuth: true
-    }
+    component: Start
   },
   {
     path: '/home',
