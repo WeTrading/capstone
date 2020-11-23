@@ -17,7 +17,7 @@
         </div>
       </li>
     </ul>
-    <el-button round @click="jump">Add To Cart</el-button>
+    <el-button round @click="jump" :disabled="judge">Add To Cart</el-button>
     <h2>Discussion</h2>
     <displayComment :productID='productID'></displayComment>
     <add-comment :userID='userID' :productID='productID' :sold="true"></add-comment>
@@ -40,7 +40,8 @@ export default {
       uploadTime: {},
       productID: {},
       currentUSer: '',
-      info: ''
+      info: '',
+      judge: true
     }
   },
   created () {
@@ -49,18 +50,19 @@ export default {
   methods: {
     loaddata () {
       this.info = this.$route.params.id
+      const user = firebase.auth().currentUser.uid
       const that = this
       var store = firebase.database().ref('Sell/' + this.$route.params.id)
       console.log('Product ID:' + this.$route.params.id)
       that.productID = this.$route.params.id
-      store.once('value', function (snapshot) {
+      store.on('value', function (snapshot) {
         that.title = snapshot.val().title
         that.description = snapshot.val().description
         that.userID = snapshot.val().userID
         that.uploadTime = snapshot.val().uploadTime
         var pro
         for (pro in snapshot.val()) {
-          if (pro !== 'userID' && pro !== 'title' && pro !== 'uploadTime' && pro !== 'description' && pro !== 'sold' && pro !== 'amount' && pro !== 'comments' && pro !== 'price') {
+          if (pro !== 'userID' && pro !== 'title' && pro !== 'uploadTime' && pro !== 'description') {
             var variable = {}
             variable.name = snapshot.val()[pro].name
             variable.href = snapshot.val()[pro].imageURL
@@ -68,7 +70,12 @@ export default {
           }
         }
       })
-      console.log(this.product)
+      if (user === this.userID) {
+        this.judge = true
+      } else {
+        this.judge = false
+      }
+      // console.log(this.product.length)
     },
     jump: function () {
       const user = firebase.auth().currentUser
@@ -76,31 +83,31 @@ export default {
         this.currentUSer = user.uid
         var that = this
         var database = firebase.database().ref('Cart/')
-        var record = 0
-        var number = 0
-        database.on('value', function (snapshot) {
+        database.once('value').then(function (snapshot) {
           var children = snapshot.hasChild(that.currentUSer)
           if (children) {
-            // var grand = snapshot.child(that.currentUSer).hasChild(that.$route.params.id)
             var grand = snapshot.child(that.currentUSer).hasChild(that.info)
             if (grand) {
-              record = 2
               // number = snapshot.child(that.currentUSer).child(that.$route.params.id).val().amount
-              number = parseInt(snapshot.child(that.currentUSer).child(that.info).val().amount + 1)
-            } else {
-              record = 3
+              var number = parseInt(snapshot.child(that.currentUSer).child(that.info).val().amount + 1)
+              return { option: 0, val: number }
+            } else if (grand === false) {
+              return { option: 1, val: 0 }
             }
           } else {
-            record = 4
+            return { option: 1, val: 0 }
+          }
+        }).then(function (object) {
+          console.log(object.option, object.val)
+          if (object.option === 0) {
+            // var number = parseInt(firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).val().amount + 1)
+            firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).update({ amount: object.val })
+          } else if (object.option === 1) {
+            firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).set({
+              amount: 1
+            })
           }
         })
-        if (record === 2) {
-          firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).update({ amount: number })
-        } else if (record === 3 || record === 4) {
-          firebase.database().ref('Cart/' + that.currentUSer + '/' + that.$route.params.id).set({
-            amount: 1
-          })
-        }
         this.$message({
           showClose: true,
           message: 'Add to Cart',

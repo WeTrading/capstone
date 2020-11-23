@@ -26,7 +26,6 @@
 import firebase from 'firebase'
 import * as fb from '../firebase'
 import { v4 as uuidv4 } from 'uuid'
-// import { component } from 'vue/types/umd'
 export default {
   name: 'addComment',
   data () {
@@ -54,22 +53,31 @@ export default {
     }
   },
   methods: {
+    setNotification () {
+      firebase.database().ref('Notifications/' + this.userID + '/' + uuidv4()).set({
+        type: 'comment',
+        userID: firebase.auth().currentUser.uid,
+        productID: this.productID,
+        commentContent: this.commentContent,
+        commentTime: Date.now()
+      })
+    },
     async postComment () {
       const commentID = uuidv4()
       console.log({
-        userID: this.userID,
+        userID: firebase.auth().currentUser.uid,
         productID: this.productID,
         commentContent: this.commentContent,
         commentID: commentID
       })
       firebase.database().ref('Comments/' + commentID).set({
-        userID: this.userID,
+        userID: firebase.auth().currentUser.uid,
         productID: this.productID,
         commentContent: this.commentContent,
         commentID: commentID,
         commentTime: Date.now()
       })
-      // Add commentID to user profile
+      this.setNotification()
       const userProfile = await fb.usersCollection.doc(this.userID).get()
       const data = userProfile.data()
       if ('comments' in data) {

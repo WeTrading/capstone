@@ -7,6 +7,7 @@ import empty from '../components/empty'
 // import Home from '../components/home'
 import Start from '../components/start'
 import AddItem from '../components/addItem'
+import Message from '../components/message'
 import Header from '../components/header'
 import Main from '../components/home2'
 import Setting from '../components/setting'
@@ -21,6 +22,10 @@ const routes = [
     path: '/',
     redirect: '/product',
     component: Product
+  },
+  {
+    path: '/message',
+    component: Message
   },
   {
     path: '/empty',
