@@ -22,6 +22,10 @@
         <i class="el-icon-shopping-cart-1"></i>
         <span slot="title">Cart</span>
       </el-menu-item>
+      <el-menu-item index="/history"  v-show="isLogin">
+        <i class="el-icon-error"></i>
+        <span slot="title">History</span>
+      </el-menu-item>
       <el-menu-item index="/login" v-show="!isLogin">
         <i class="el-icon-success"></i>
         <span slot="title">Login</span>
@@ -41,10 +45,6 @@
       <el-menu-item index="/setting" v-show="isLogin">
         <i class="el-icon-setting"></i>
         <span slot="title">setting</span>
-      </el-menu-item>
-      <el-menu-item index="/"  @click="check_user">
-        <i class="el-icon-error"></i>
-        <span slot="title">User</span>
       </el-menu-item>
 
     </el-menu>

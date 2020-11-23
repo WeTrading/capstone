@@ -1,3 +1,4 @@
+
 <template>
   <div class="page-shopping-cart" id="shopping-cart">
     <div class="cart-title">
@@ -15,6 +16,7 @@
             <div class="ccdes">
               <p>Title: {{item.title}}</p>
               <p>Price: ${{item.price}}</p>
+              <p>Stock: {{item.stock}}</p>
             </div>
           </td>
           <td class="td-num fl">
@@ -101,10 +103,6 @@ export default {
         type: 'warning'
       }).then(() => {
         this.buyitem2()
-        this.$message({
-          type: 'success',
-          message: 'Transaction complete!'
-        })
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -112,22 +110,6 @@ export default {
         })
       })
     },
-    /* sumadd (product) {
-      if (product.check) {
-        var db = firebase.database().ref('Sell/' + product.key)
-        var that = this
-        db.on('value', function (dbshot) {
-          that.sumprice += (product.want * dbshot.val().price)
-          console.log(dbshot.val().price)
-        })
-      } else {
-        db = firebase.database().ref('Sell/' + product.key)
-        db.on('value', function (dbshot) {
-          that.sumprice -= (product.want * dbshot.val().price)
-          console.log(dbshot.val().price)
-        })
-      }
-    }, */
     buyitem2 () {
       const that = this
       var judge = true
@@ -205,6 +187,10 @@ export default {
         }
         that.addtohistory(item)
       })
+      this.$message({
+        type: 'success',
+        message: 'Transaction complete!'
+      })
       this.$router.replace({ path: '/empty' })
     }
   }
@@ -215,8 +201,8 @@ export default {
 .cart-title {
   max-height: 100vh;
   font-size: xx-large;
+  color: white;
   background: linear-gradient(-90deg, #6a79cf, #1627c0);
-  color: #ffffff;
   font-family: "Roboto", sans-serif;
   text-align: center;
 }
@@ -226,16 +212,11 @@ export default {
 .fr{
   float: right;
 }
-a{
-  text-decoration: none;
-  color: #333;
-}
 .page-shopping-cart {
   width: 1200px;
   font-size: 14px;
+  color: black;
 }
-.page-shopping-cart {
-  color: black; }
 .page-shopping-cart .td-product .td-do{
   text-align: center;
   width: 200px; }
@@ -256,17 +237,15 @@ a{
   padding-top: 30px;
 }
 .page-shopping-cart .td-check {
-  text-align: center;
   width: 50px; }
 .page-shopping-cart .cart-product {
-  padding: 0 20px;
-  text-align: center; }
+  padding: 0 20px; }
 .page-shopping-cart .cart-product table {
   width: 100%;
   text-align: center;
   font-size: 14px; }
 .page-shopping-cart .cart-product table tr {
-  border-bottom: 1px dashed #e3e3e3; }
+  border-bottom: 1px black; }
 .page-shopping-cart .cart-product table .td-product {
   text-align: left;
   font-size: 12px;
