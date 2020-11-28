@@ -2,17 +2,26 @@
     <div class = "goods">
       <ul class="goods_continer">
         <li v-for="item in productlist.slice((currentpage-1)*pagesize,currentpage*pagesize)" :key="item.name">
-          <div class="bg">
-            <img :src="item.href[item.currentindex]" width="400px" height="400px">
-          </div>
-          <div>
-            <router-link :to="'/product/' + item.key" class="btn btn-primary">{{item.title}}</router-link>
-          </div>
+          <el-card :body-style="{ padding: '0px' }" class = "card">
+            <div class="bg">
+              <el-carousel height="250px" :interval="10000" arrow="always">
+                <el-carousel-item v-for="url in item.href" :key="url">
+                  <img :src="url" width="250px" height="250px">
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+            <div style="padding: 14px;">
+              <router-link :to="'/product/' + item.key" class="btn btn-primary">{{item.title}}</router-link>
+              <div class="bottom clearfix">
+                <span>{{item.description}}</span>
+              </div>
+            </div>
+          </el-card>
         </li>
        </ul>
         <el-pagination
           @current-change="handleCurrentChange"
-          :page-size="5"
+          :page-size="8"
           layout="prev, pager, next"
           :total="countvalue">
         </el-pagination>
@@ -29,7 +38,7 @@ export default {
       productlist: [],
       startpage: 1,
       currentpage: 1,
-      pagesize: 5
+      pagesize: 8
     }
   },
   created () {
@@ -52,9 +61,11 @@ export default {
               variable.userid = childSnapshot.val()[pro]
             } else if (pro === 'title') {
               variable.title = childSnapshot.val()[pro]
-            } else if (pro === 'discription') {
-              variable.discription = childSnapshot.val()[pro]
-            } else {
+            } else if (pro === 'description') {
+              variable.description = childSnapshot.val()[pro]
+            } else if (pro === 'price') {
+              variable.price = childSnapshot.val()[pro]
+            } else if (pro !== 'comments' && pro !== 'sold' && pro !== 'amount' && pro !== 'uploadTime') {
               // url.push(childSnapshot.val()[pro].imageURL)
               if (childSnapshot.val()[pro].highlight === 1) {
                 url.splice(0, 0, childSnapshot.val()[pro].imageURL)
@@ -84,12 +95,8 @@ export default {
 .goods{
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin-left: 150px;
-  /* margin-top: 100px; */
+  margin-left: 30px;
+  margin-top: 50px;
 }
 .goods_continer{
   height: 100%;
@@ -97,15 +104,21 @@ export default {
 .goods li{
   list-style-type: none;
   float: left;
-  width: 400px;
-  height: 450px;
-  margin-right: 40px;
-  margin-bottom: 40px;
+  width: 250px;
+  height: 350px;
+  margin-right: 30px;
+  margin-bottom: 30px;
+}
+.card {
+  padding: 0;
+  width: 250px;
+  height: 350px;
 }
 .goods .bg{
   float: left;
-  width: 400px;
-  height: 400px;
+  width: 250px;
+  height: 250px;
+  margin-bottom: 15px;
 }
 .goods .info {
   float: left;

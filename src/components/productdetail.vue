@@ -1,23 +1,46 @@
 <template>
   <article class="col-sm-12">
-    <h1>Title: {{ title }}</h1>
-    <p>Description: {{ description }}</p>
-    <p>UserID: {{ userID }}</p>
-    <p>UploadTime: {{ uploadTime }}</p>
-    <br>
-    <p>Images</p>
-    <br>
-    <ul>
+    <ul class="photo">
       <li v-for="item in product" :key="item.name">
         <div>
-          <p>Name: {{ item.name }}</p>
           <br>
-          <img :src="item.href" width="400px" height="400px">
+          <img :src="item.href" width="400px" height="400px" class="pho">
           <br>
         </div>
       </li>
     </ul>
-    <el-button round @click="jump" :disabled="judge">Add To Cart</el-button>
+    <v-card
+      class="mx-auto"
+      max-width="400"
+      outlined
+    >
+      <v-list-item three-line>
+        <v-list-item-content>
+          <h1>
+            Product Detail
+          </h1>
+          <v-list-item-title class="headline mb-1">
+            Title: {{title}}
+          </v-list-item-title>
+          <v-list-item-title class="headline mb-1">
+            UserID: {{ userID }}
+          </v-list-item-title>
+          <v-list-item-subtitle>UploadTime: {{ uploadTime }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-card-actions>
+        <v-btn
+          outlined
+          rounded
+          text
+          @click="jump"
+          :disabled="judge"
+        >
+          Add To Cart
+        </v-btn>
+      </v-card-actions>
+    </v-card>
     <h2>Discussion</h2>
     <displayComment :productID='productID'></displayComment>
     <add-comment :userID='userID' :productID='productID' :sold="true"></add-comment>
@@ -125,5 +148,26 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.photo {
+  list-style-type: none;
+  display: inline-block;
+  margin-right: 50px;
+}
+.pho {
+  border: 1px solid black;
+  border-radius: 20px;
+  box-shadow: 10px 10px 5px #888888;
+}
+ul li {
+  float: left;
+  margin-right: 50px;
+}
+.mx-auto {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+h1 {
+  font-size: x-large;
+}
 </style>

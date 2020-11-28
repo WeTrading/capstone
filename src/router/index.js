@@ -13,6 +13,7 @@ import Main from '../components/home2'
 import Setting from '../components/setting'
 import Product from '../components/product'
 import ProductDetail from '../components/productdetail'
+import History from '../components/history'
 import { auth } from '../firebase'
 
 Vue.use(Router)
@@ -40,6 +41,10 @@ const routes = [
   {
     path: '/homee',
     component: Main
+  },
+  {
+    path: '/history',
+    component: History
   },
   {
     path: '/header',

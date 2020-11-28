@@ -29,7 +29,7 @@
         </tbody></table>
     </div>
     <div class="cart-product-info">
-      <el-button class="btn-buy fr" round @click="buyitem3">Add To Cart</el-button>
+      <el-button class="btn-buy fr" round @click="buyitem3">CheckOut</el-button>
     </div>
   </div>
 </template>

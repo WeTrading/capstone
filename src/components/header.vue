@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <el-menu router default-active="$router.path" class="el-menu-vertical-demo" :collapse="isCollapse" active-text-color="#ffd04b">
+    <el-menu router default-active="$router.path" class="el-menu-vertical-demo" :collapse="isCollapse">
       <el-menu-item index="/product">
         <i class="el-icon-menu"></i>
         <span slot="title">Home</span>
@@ -14,16 +14,12 @@
         <i class="el-icon-message-solid"></i>
         <span slot="title">Message</span>
       </el-menu-item>
-      <el-menu-item index = "/product">
-        <i class="el-icon-s-grid"></i>
-        <span slot="title">Store</span>
-      </el-menu-item>
       <el-menu-item index = "/cart" v-show="isLogin">
         <i class="el-icon-shopping-cart-1"></i>
         <span slot="title">Cart</span>
       </el-menu-item>
       <el-menu-item index="/history"  v-show="isLogin">
-        <i class="el-icon-error"></i>
+        <i class="el-icon-date"></i>
         <span slot="title">History</span>
       </el-menu-item>
       <el-menu-item index="/login" v-show="!isLogin">
@@ -34,17 +30,17 @@
         <i class="el-icon-success"></i>
         <span slot="title">Register</span>
       </el-menu-item>
-      <el-menu-item index="/" v-show="isLogin" @click="exit">
-        <i class="el-icon-error"></i>
-        <span slot="title">Logout</span>
+      <el-menu-item index="/setting" v-show="isLogin">
+        <i class="el-icon-setting"></i>
+        <span slot="title">setting</span>
       </el-menu-item>
       <el-menu-item v-show="isLogin" >
         <i class = "el-icon-user-solid"></i>
         <span slot="title">{{show_user()}}{{username}}</span>
       </el-menu-item>
-      <el-menu-item index="/setting" v-show="isLogin">
-        <i class="el-icon-setting"></i>
-        <span slot="title">setting</span>
+      <el-menu-item index="/" v-show="isLogin" @click="exit">
+        <i class="el-icon-error"></i>
+        <span slot="title">Logout</span>
       </el-menu-item>
 
     </el-menu>
@@ -118,6 +114,6 @@ export default {
 <style scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-  min-height: 400px;
+  height: 100%;
 }
 </style>
