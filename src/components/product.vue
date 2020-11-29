@@ -1,5 +1,28 @@
 <template>
     <div class = "goods">
+      <el-input
+        placeholder="I want to find ..."
+        v-model="searchtarget"
+        @keyup.enter.native="searchandsort"
+        clearable>
+      </el-input>
+      <el-select v-model="attribute" clearable placeholder="Sort By">
+        <el-option
+          v-for="item in attributes"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-select v-model="sortoption" clearable placeholder="Order">
+        <el-option
+          v-for="item in sortoptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button type="primary" icon="el-icon-search" @click="searchandsort">Search</el-button>
       <ul class="goods_continer">
         <li v-for="item in productlist.slice((currentpage-1)*pagesize,currentpage*pagesize)" :key="item.name">
           <el-card :body-style="{ padding: '0px' }" class = "card">
@@ -34,6 +57,23 @@ export default {
   name: 'product',
   data: function () {
     return {
+      sortoptions: [{
+        value: 'Ascending',
+        label: 'Ascending'
+      }, {
+        value: 'Descending',
+        label: 'Descending'
+      }],
+      sortoption: '',
+      attributes: [{
+        value: 'price',
+        label: 'Price'
+      }, {
+        value: 'amount',
+        label: 'Amount'
+      }],
+      attribute: '',
+      searchtarget: '',
       countvalue: 0,
       productlist: [],
       startpage: 1,
@@ -49,39 +89,98 @@ export default {
       const that = this
       var store = firebase.database().ref('Sell')
       store.on('value', function (snapshot) {
-        that.countvalue = snapshot.numChildren()
         snapshot.forEach(function (childSnapshot) {
-          var variable = {}
-          var url = []
-          variable.key = childSnapshot.key
-          variable.currentindex = 0
-          var pro
-          for (pro in childSnapshot.val()) {
-            if (pro === 'userID') {
-              variable.userid = childSnapshot.val()[pro]
-            } else if (pro === 'title') {
-              variable.title = childSnapshot.val()[pro]
-            } else if (pro === 'description') {
-              variable.description = childSnapshot.val()[pro]
-            } else if (pro === 'price') {
-              variable.price = childSnapshot.val()[pro]
-            } else if (pro !== 'comments' && pro !== 'sold' && pro !== 'amount' && pro !== 'uploadTime') {
-              // url.push(childSnapshot.val()[pro].imageURL)
-              if (childSnapshot.val()[pro].highlight === 1) {
-                url.splice(0, 0, childSnapshot.val()[pro].imageURL)
-                variable.cover = childSnapshot.val()[pro].imageURL
-                variable.name = childSnapshot.val()[pro].name
-                variable.highlight = childSnapshot.val()[pro].highlight
-              } else {
-                url.push(childSnapshot.val()[pro].imageURL)
+          if (childSnapshot.val().amount > 0) {
+            var variable = {}
+            var url = []
+            variable.key = childSnapshot.key
+            variable.currentindex = 0
+            var pro
+            for (pro in childSnapshot.val()) {
+              if (pro === 'userID') {
+                variable.userid = childSnapshot.val()[pro]
+              } else if (pro === 'title') {
+                variable.title = childSnapshot.val()[pro]
+              } else if (pro === 'description') {
+                variable.description = childSnapshot.val()[pro]
+              } else if (pro === 'price') {
+                variable.price = childSnapshot.val()[pro]
+              } else if (pro !== 'comments' && pro !== 'sold' && pro !== 'amount' && pro !== 'uploadTime') {
+                if (childSnapshot.val()[pro].highlight === 1) {
+                  url.splice(0, 0, childSnapshot.val()[pro].imageURL)
+                  variable.cover = childSnapshot.val()[pro].imageURL
+                  variable.name = childSnapshot.val()[pro].name
+                  variable.highlight = childSnapshot.val()[pro].highlight
+                } else {
+                  url.push(childSnapshot.val()[pro].imageURL)
+                }
               }
             }
+            variable.href = url
+            that.productlist.push(variable)
           }
-          variable.href = url
-          that.productlist.push(variable)
         })
       })
+      that.countvalue = that.productlist.length
       // console.log(this.productlist)
+    },
+    searchandsort () {
+      var sort = this.attribute
+      var dirct = this.sortoption
+      if (sort === '' && dirct === '') {
+        sort = 'price'
+        dirct = 'Ascending'
+      }
+      if (sort === '') {
+        sort = 'price'
+      }
+      if (dirct === '') {
+        if (sort === 'price') {
+          dirct = 'Ascending'
+        } else {
+          dirct = 'Descending'
+        }
+      }
+      const that = this
+      that.productlist = []
+      var store = firebase.database().ref('Sell')
+      store.orderByChild(sort).once('value', function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+          if (childSnapshot.val().title.toLowerCase().includes(that.searchtarget.toLowerCase()) && childSnapshot.val().amount > 0) {
+            var variable = {}
+            var url = []
+            variable.key = childSnapshot.key
+            variable.currentindex = 0
+            var pro
+            for (pro in childSnapshot.val()) {
+              if (pro === 'userID') {
+                variable.userid = childSnapshot.val()[pro]
+              } else if (pro === 'title') {
+                variable.title = childSnapshot.val()[pro]
+              } else if (pro === 'description') {
+                variable.description = childSnapshot.val()[pro]
+              } else if (pro === 'price') {
+                variable.price = childSnapshot.val()[pro]
+              } else if (pro !== 'comments' && pro !== 'sold' && pro !== 'amount' && pro !== 'uploadTime') {
+                if (childSnapshot.val()[pro].highlight === 1) {
+                  url.splice(0, 0, childSnapshot.val()[pro].imageURL)
+                  variable.cover = childSnapshot.val()[pro].imageURL
+                  variable.name = childSnapshot.val()[pro].name
+                  variable.highlight = childSnapshot.val()[pro].highlight
+                } else {
+                  url.push(childSnapshot.val()[pro].imageURL)
+                }
+              }
+            }
+            variable.href = url
+            that.productlist.push(variable)
+          }
+        })
+      })
+      if (dirct === 'Descending') {
+        that.productlist.reverse()
+      }
+      that.countvalue = that.productlist.length
     },
     handleCurrentChange (val) {
       this.currentpage = val
@@ -92,6 +191,17 @@ export default {
 </script>
 
 <style scoped>
+.el-input {
+  width: 400px;
+  margin-left: 5px;
+}
+.el-select {
+  width: 100px;
+  margin-left: 30px;
+}
+.el-button {
+  margin-left: 30px;
+}
 .goods{
   width: 100%;
   height: 100%;
@@ -100,6 +210,7 @@ export default {
 }
 .goods_continer{
   height: 100%;
+  margin-top: 50px;
 }
 .goods li{
   list-style-type: none;
