@@ -16,7 +16,9 @@
             <div class="ccdes">
               <p>Title: {{item.title}}</p>
               <p>Price: ${{item.price}}</p>
-              <p>Stock: {{item.stock}}</p>
+              <p>Stock: <span v-if="!item.status">Out Of Stock</span>
+                <span v-if="item.status">{{item.stock}}</span>
+              </p>
             </div>
           </td>
           <td class="td-num fl">
@@ -213,9 +215,10 @@ export default {
   float: right;
 }
 .page-shopping-cart {
-  width: 1200px;
+  width: 1000px;
   font-size: 14px;
   color: black;
+  margin: 0 auto;
 }
 .page-shopping-cart .td-product .td-do{
   text-align: center;

@@ -16,6 +16,7 @@
     "uuid": "^8.3.1",
     "uuid-by-string": "^3.0.2",
     "vue": "^2.6.12",
+    "vue-photo-zoom-pro": "^1.4.3",
     "vue-router": "^3.2.0",
     "vue-upload-multiple-image": "^1.1.6",
     "vuetify": "^2.3.15",

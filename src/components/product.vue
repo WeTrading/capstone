@@ -35,8 +35,8 @@
             </div>
             <div style="padding: 14px;">
               <router-link :to="'/product/' + item.key" class="btn btn-primary">{{item.title}}</router-link>
-              <div class="bottom clearfix">
-                <span>{{item.description}}</span>
+              <div class="clearfix bottom handle">
+                <span>$ {{item.price}}</span>
               </div>
             </div>
           </el-card>
@@ -223,7 +223,7 @@ export default {
 .card {
   padding: 0;
   width: 250px;
-  height: 350px;
+  height: 330px;
 }
 .goods .bg{
   float: left;
@@ -237,6 +237,9 @@ export default {
   text-align: center;
   width: 400px;
   height: 30px;
+}
+.handle {
+  margin-top: 10px;
 }
 .el-pagination {
   display: block;

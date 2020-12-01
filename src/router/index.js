@@ -14,6 +14,7 @@ import Setting from '../components/setting'
 import Product from '../components/product'
 import ProductDetail from '../components/productdetail'
 import History from '../components/history'
+import Change from '../components/changestate'
 import { auth } from '../firebase'
 
 Vue.use(Router)
@@ -41,6 +42,10 @@ const routes = [
   {
     path: '/homee',
     component: Main
+  },
+  {
+    path: '/change',
+    component: Change
   },
   {
     path: '/history',

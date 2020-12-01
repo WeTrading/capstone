@@ -18,6 +18,10 @@
         <i class="el-icon-shopping-cart-1"></i>
         <span slot="title">Cart</span>
       </el-menu-item>
+      <el-menu-item index = "/change" v-show="isLogin">
+        <i class="el-icon-edit"></i>
+        <span slot="title">Change</span>
+      </el-menu-item>
       <el-menu-item index="/history"  v-show="isLogin">
         <i class="el-icon-date"></i>
         <span slot="title">History</span>

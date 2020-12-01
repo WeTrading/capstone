@@ -6,7 +6,9 @@ import './plugins/element.js'
 import './assets/css/global.css'
 import { auth } from './firebase'
 import vuetify from './plugins/vuetify'
+import VuePhotoZoomPro from 'vue-photo-zoom-pro'
 Vue.config.productionTip = false
+Vue.use(VuePhotoZoomPro)
 
 let app
 auth.onAuthStateChanged(() => {
