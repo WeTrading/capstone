@@ -16,16 +16,16 @@
                         alt="John"
                     >
                 </v-avatar>
-              <v-card-subtitle> User ID: {{item.userID}}</v-card-subtitle>
+              <v-card-subtitle> User Name: {{item.userName}}</v-card-subtitle>
               </v-layout>
               <v-card-text> Comments: {{item.commentContent}}</v-card-text>
               <v-card-actions>
-              <v-btn
+              <!-- <v-btn
                 text
                 color="teal accent-4"
               >
               Reply
-              </v-btn>
+              </v-btn> -->
               </v-card-actions>
         </v-card>
         </v-flex>
@@ -41,6 +41,7 @@
 
 <script>
 import firebase from 'firebase'
+import * as fb from '../firebase'
 export default {
   name: 'displayComments',
   data: function () {
@@ -62,6 +63,12 @@ export default {
     this.getdata()
   },
   methods: {
+    async getName (userID) {
+      const userProfile = await fb.usersCollection.doc(userID).get()
+      const data = await userProfile.data()
+      console.log('Name: ' + data.name)
+      return data.name
+    },
     getdata () {
       const that = this
       var store = firebase.database().ref('Sell/' + that.productID + '/comments')
@@ -74,11 +81,13 @@ export default {
           console.log(variable.key)
           var commentRef = firebase.database().ref('Comments/' + childSnapshot.key)
 
-          commentRef.once('value').then(function (snapshot2) {
-            variable.userID = snapshot2.val().userID
+          commentRef.once('value').then(async function (snapshot2) {
             variable.commentContent = snapshot2.val().commentContent
             variable.commentTime = snapshot2.val().commentTime
+            variable.userID = snapshot2.val().userID
+            variable.userName = await that.getName(variable.userID)
             tempcommentlist.push(variable)
+            return snapshot2.val().userID
           })
         })
         that.commentlist = tempcommentlist

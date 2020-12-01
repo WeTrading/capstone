@@ -4,11 +4,11 @@
     <el-menu router default-active="$router.path" class="el-menu-vertical-demo" :collapse="isCollapse">
       <el-menu-item index="/product">
         <i class="el-icon-menu"></i>
-        <span slot="title">Home</span>
+        <span slot="title">Store</span>
       </el-menu-item>
       <el-menu-item index="/addItem" v-show="isLogin">
         <i class="el-icon-document"></i>
-        <span slot="title">Sell Product</span>
+        <span slot="title">Publish</span>
       </el-menu-item>
       <el-menu-item index = "/message" v-show="isLogin">
         <i class="el-icon-message-solid"></i>
@@ -32,7 +32,7 @@
       </el-menu-item>
       <el-menu-item index="/setting" v-show="isLogin">
         <i class="el-icon-setting"></i>
-        <span slot="title">setting</span>
+        <span slot="title">Setting</span>
       </el-menu-item>
       <el-menu-item v-show="isLogin" >
         <i class = "el-icon-user-solid"></i>
