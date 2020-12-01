@@ -11,7 +11,7 @@
             outlined
             shaped
             >
-              <v-card-title>Product ID: {{item.productID}}</v-card-title>
+              <v-card-title>Product: {{item.productName}}</v-card-title>
               <v-layout col>
                 <v-avatar
                   color="teal"
@@ -22,7 +22,7 @@
                         alt="John"
                     >
                 </v-avatar>
-              <v-card-subtitle> User ID: {{item.userID}}</v-card-subtitle>
+              <v-card-subtitle> <h1>{{item.userName}}</h1> at {{toDate(item.commentTime)}}</v-card-subtitle>
               </v-layout>
               <v-card-text> Comments: {{item.commentContent}}</v-card-text>
               <v-card-actions>
@@ -57,6 +57,7 @@
 
 <script>
 import firebase from 'firebase'
+import * as fb from '../firebase'
 export default {
   name: 'message',
   data () {
@@ -73,6 +74,24 @@ export default {
     this.getdata()
   },
   methods: {
+    toDate (num) {
+      const date = new Date(num)
+      return date.toLocaleTimeString() + ', ' + date.toDateString()
+    },
+    async getName (userID) {
+      const userProfile = await fb.usersCollection.doc(userID).get()
+      const data = await userProfile.data()
+      console.log('Name: ' + data.name)
+      return data.name
+    },
+    async getProductName (productID) {
+      const store = firebase.database().ref('Sell/' + productID)
+      let title = ''
+      await store.once('value', async function (snapshot) {
+        title = snapshot.val().title
+      })
+      return title
+    },
     detailedPage (productID) {
       this.$router.push({ path: '/product/' + productID })
     },
@@ -87,13 +106,15 @@ export default {
       const ref = firebase.database().ref('Notifications/' + this.userID)
       ref.on('value', function (snapshot) {
         that.countvalue = snapshot.numChildren()
-        snapshot.forEach(function (childSnapshot) {
+        snapshot.forEach(async function (childSnapshot) {
           if (childSnapshot.val().userID !== that.userID) {
             that.messagelist.push({
               currentindex: 0,
               key: childSnapshot.key,
               type: childSnapshot.val().type,
               userID: childSnapshot.val().userID,
+              userName: await that.getName(childSnapshot.val().userID),
+              productName: await that.getProductName(childSnapshot.val().productID),
               productID: childSnapshot.val().productID,
               commentTime: childSnapshot.val().commentTime,
               commentContent: childSnapshot.val().commentContent

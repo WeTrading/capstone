@@ -23,9 +23,9 @@
             Title: {{title}}
           </v-list-item-title>
           <v-list-item-title class="headline mb-1">
-            UserID: {{ userID }}
+            Seller: {{ userName }}
           </v-list-item-title>
-          <v-list-item-subtitle>UploadTime: {{ uploadTime }}</v-list-item-subtitle>
+          <v-list-item-subtitle>Posted at: {{ toDate(uploadTime) }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
@@ -51,6 +51,7 @@
 import firebase from 'firebase'
 import addComment from './addComment.vue'
 import displayComment from './displayComments.vue'
+import * as fb from '../firebase'
 export default {
   components: { addComment, displayComment },
   name: 'productdetail',
@@ -60,6 +61,7 @@ export default {
       title: {},
       description: {},
       userID: {},
+      userName: {},
       uploadTime: {},
       productID: {},
       currentUSer: '',
@@ -71,6 +73,16 @@ export default {
     this.loaddata()
   },
   methods: {
+    toDate (num) {
+      const date = new Date(num)
+      return date.toLocaleTimeString() + ', ' + date.toDateString()
+    },
+    async getName (userID) {
+      const userProfile = await fb.usersCollection.doc(userID).get()
+      const data = await userProfile.data()
+      console.log('Name: ' + data.name)
+      return data.name
+    },
     loaddata () {
       this.info = this.$route.params.id
       const user = firebase.auth().currentUser.uid
@@ -78,10 +90,11 @@ export default {
       var store = firebase.database().ref('Sell/' + this.$route.params.id)
       console.log('Product ID:' + this.$route.params.id)
       that.productID = this.$route.params.id
-      store.once('value', function (snapshot) {
+      store.once('value', async function (snapshot) {
         that.title = snapshot.val().title
         that.description = snapshot.val().description
         that.userID = snapshot.val().userID
+        that.userName = await that.getName(snapshot.val().userID)
         that.uploadTime = snapshot.val().uploadTime
         var pro
         for (pro in snapshot.val()) {

@@ -8,25 +8,20 @@
             shaped
             >
               <v-layout col>
-                <v-avatar
-                  color="teal"
-                >
-                    <img
-                        src="https://cdn.vuetifyjs.com/images/john.jpg"
-                        alt="John"
-                    >
+                <v-avatar>
+                    <img src="https://cdn.vuetifyjs.com/images/john.jpg">
                 </v-avatar>
-              <v-card-subtitle> User Name: {{item.userName}}</v-card-subtitle>
+              <v-card-subtitle> <h1>{{item.userName}}</h1> at {{toDate(item.commentTime)}}</v-card-subtitle>
               </v-layout>
-              <v-card-text> Comments: {{item.commentContent}}</v-card-text>
-              <v-card-actions>
+              <v-card-text> {{item.commentContent}}</v-card-text>
+              <!-- <v-card-actions> -->
               <!-- <v-btn
                 text
                 color="teal accent-4"
               >
               Reply
               </v-btn> -->
-              </v-card-actions>
+              <!-- </v-card-actions> -->
         </v-card>
         </v-flex>
     </li>
@@ -63,6 +58,10 @@ export default {
     this.getdata()
   },
   methods: {
+    toDate (num) {
+      const date = new Date(num)
+      return date.toLocaleTimeString() + ', ' + date.toDateString()
+    },
     async getName (userID) {
       const userProfile = await fb.usersCollection.doc(userID).get()
       const data = await userProfile.data()
