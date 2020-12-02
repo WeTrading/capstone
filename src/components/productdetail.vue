@@ -13,8 +13,8 @@
       <div class="right">
         <h1> {{title}} </h1>
         <div class="userinfo">
-          <div class="ID"> <p>UserID: {{userID}}</p></div>
-          <div class="upload"><p>UploadTime: {{uploadTime}}</p></div>
+          <div class="ID"> <p>Seller: {{userName}}</p></div>
+          <div class="upload"><p>Posted at: {{toDate(uploadTime)}}</p></div>
         </div>
         <div class="description">
           {{description}}
