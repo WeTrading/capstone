@@ -3,7 +3,8 @@
         <v-textarea
             label="Comment"
             auto-grow
-            outlined
+            solo
+            rounded
             rows="3"
             row-height="15"
             v-model="commentContent"

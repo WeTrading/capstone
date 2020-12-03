@@ -14,14 +14,15 @@
               <v-card-subtitle> <h1>{{item.userName}}</h1> at {{toDate(item.commentTime)}}</v-card-subtitle>
               </v-layout>
               <v-card-text> {{item.commentContent}}</v-card-text>
-              <!-- <v-card-actions> -->
-              <!-- <v-btn
-                text
-                color="teal accent-4"
-              >
-              Reply
-              </v-btn> -->
-              <!-- </v-card-actions> -->
+              <v-col>
+                <v-text-field
+                solo
+                dense
+                rounded
+                clearable
+                placeholder='Reply to comment'
+                ></v-text-field>
+              </v-col>
         </v-card>
         </v-flex>
     </li>

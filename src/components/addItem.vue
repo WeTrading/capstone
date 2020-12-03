@@ -24,6 +24,7 @@
           <v-col cols="4">
             <v-text-field
               ref="title"
+              clearable
               v-model="title"
               :rules="[
                 () => !!title || 'This field is required',
@@ -53,6 +54,7 @@
             label="Description"
             auto-grow
             outlined
+            clearable
             rows="3"
             row-height="15"
             v-model="description"
