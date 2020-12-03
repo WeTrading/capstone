@@ -15,13 +15,21 @@
               </v-layout>
               <v-card-text> {{item.commentContent}}</v-card-text>
               <v-col>
+              <v-layout justify-center>
                 <v-text-field
+                :id="item.commentUUID"
                 solo
                 dense
                 rounded
                 clearable
-                placeholder='Reply to comment'
+                placeholder='Reply to comment ...'
                 ></v-text-field>
+                <v-btn
+                @click="replyToComent(item.commentUUID)"
+                >
+                  Reply
+                </v-btn>
+              </v-layout>
               </v-col>
         </v-card>
         </v-flex>
@@ -59,6 +67,20 @@ export default {
     this.getdata()
   },
   methods: {
+    async getUserName () {
+      const userID = firebase.auth().currentUser.uid
+      const name = await this.getName(userID)
+      return name
+    },
+    async replyToComent (commentUUID) {
+      const data = document.getElementById(commentUUID).value
+      if (!data) {
+        console.log('Data is None!')
+      }
+      // append comment to the message
+      const message = 'Reply from ' + await this.getUserName() + ' at ' + 'Time:' + data
+      console.log(message)
+    },
     toDate (num) {
       const date = new Date(num)
       return date.toLocaleTimeString() + ', ' + date.toDateString()
@@ -80,7 +102,7 @@ export default {
           variable.key = childSnapshot.key
           console.log(variable.key)
           var commentRef = firebase.database().ref('Comments/' + childSnapshot.key)
-
+          variable.commentUUID = childSnapshot.key
           commentRef.once('value').then(async function (snapshot2) {
             variable.commentContent = snapshot2.val().commentContent
             variable.commentTime = snapshot2.val().commentTime
