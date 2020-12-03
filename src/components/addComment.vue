@@ -13,6 +13,7 @@
             ]"
             counter=200
             required
+            clearable
         ></v-textarea>
         <v-btn
         :disabled="isDisabled"
@@ -99,6 +100,7 @@ export default {
       const updates = {}
       updates['/comments/' + commentID] = true
       firebase.database().ref(productPath + this.productID).update(updates)
+      this.commentContent = null
     }
   }
 }

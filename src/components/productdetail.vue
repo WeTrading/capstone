@@ -82,7 +82,7 @@ export default {
       const that = this
       var store = firebase.database().ref('Sell/' + this.$route.params.id)
       that.productID = this.$route.params.id
-      store.once('value', async function (snapshot) {
+      store.on('value', async function (snapshot) {
         that.title = snapshot.val().title
         that.description = snapshot.val().description
         that.userID = snapshot.val().userID

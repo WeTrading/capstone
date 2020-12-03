@@ -99,7 +99,7 @@ export default {
       markIsPrimaryText: 'Mark as highlight',
       popupText: 'You can only highlight one photo',
       dropText: 'Drop here',
-      productUUID: uuidv4(),
+      productUUID: null,
       userID: firebase.auth().currentUser.uid,
       imgs: {},
       productInfo: {},
@@ -115,8 +115,9 @@ export default {
     }
   },
   methods: {
-    upload () {
-      firebase.database().ref('Sell/' + this.productUUID).set({})
+    async upload () {
+      this.productUUID = uuidv4()
+      await firebase.database().ref('Sell/' + this.productUUID).set({})
       this.productInfo.userID = this.userID
       this.productInfo.title = this.title
       this.productInfo.description = this.description
@@ -129,7 +130,10 @@ export default {
         this.uploadImageData(img.name, img.data, this)
       }
       // add this product info into user profile
-      this.addProductToUser()
+      const that = this
+      await this.addProductToUser().then(function () {
+        that.$router.push({ path: '/product/' + that.productUUID })
+      })
     },
     async addProductToUser () {
       const userProfile = await fb.usersCollection.doc(this.userID).get()
@@ -137,11 +141,11 @@ export default {
       if ('sellList' in data) {
         const oldSellList = data.sellList
         await oldSellList.push(this.productUUID)
-        fb.usersCollection.doc(this.userID).update({
+        await fb.usersCollection.doc(this.userID).update({
           sellList: oldSellList
         })
       } else {
-        fb.usersCollection.doc(this.userID).update({
+        await fb.usersCollection.doc(this.userID).update({
           sellList: [this.productUUID]
         })
       }
