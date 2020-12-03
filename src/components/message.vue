@@ -105,9 +105,11 @@ export default {
       const that = this
       const ref = firebase.database().ref('Notifications/' + this.userID)
       ref.on('value', function (snapshot) {
-        that.countvalue = snapshot.numChildren()
+        that.countvalue = 0
+        console.log('num: ' + that.countvalue)
         snapshot.forEach(async function (childSnapshot) {
           if (childSnapshot.val().userID !== that.userID) {
+            that.countvalue += 1
             that.messagelist.push({
               currentindex: 0,
               key: childSnapshot.key,
