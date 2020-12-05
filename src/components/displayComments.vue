@@ -1,6 +1,6 @@
 <template>
     <div>
-    <li v-for="item in commentlist.slice((currentpage-1)*pagesize,currentpage*pagesize)" :key="item.commentID">
+    <li v-for="item in commentlist.slice((currentpage-1)*pagesize,currentpage*pagesize)" :key="item.commentUUID">
         <v-flex md8 offset-sm3 class="text-center">
         <v-card
             elevation="2"
@@ -25,7 +25,7 @@
                 placeholder='Reply to comment ...'
                 ></v-text-field>
                 <v-btn
-                @click="replyToComent(item.commentUUID)"
+                @click="replyToComment(item.userID, item.commentUUID)"
                 >
                   Reply
                 </v-btn>
@@ -46,6 +46,7 @@
 <script>
 import firebase from 'firebase'
 import * as fb from '../firebase'
+import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'displayComments',
   data: function () {
@@ -72,14 +73,36 @@ export default {
       const name = await this.getName(userID)
       return name
     },
-    async replyToComent (commentUUID) {
+    async replyToComment (userID, commentUUID) {
       const data = document.getElementById(commentUUID).value
       if (!data) {
-        console.log('Data is None!')
+        return
       }
+      const name = await this.getName(userID)
       // append comment to the message
-      const message = 'Reply from ' + await this.getUserName() + ' at ' + 'Time:' + data
-      console.log(message)
+      const message = 'Reply to ' + name + ': ' + data
+      const commentID = uuidv4()
+      firebase.database().ref('Comments/' + commentID).set({
+        userID: firebase.auth().currentUser.uid,
+        productID: this.productID,
+        commentContent: message,
+        commentID: commentID,
+        commentTime: Date.now()
+      })
+      this.setNotification(userID, message)
+      // Add commentID to product profile
+      const updates = {}
+      updates['/comments/' + commentID] = true
+      firebase.database().ref('Sell/' + this.productID).update(updates)
+    },
+    setNotification (userID, replyContent) {
+      firebase.database().ref('Notifications/' + userID + '/' + uuidv4()).set({
+        type: 'reply',
+        userID: firebase.auth().currentUser.uid,
+        productID: this.productID,
+        commentContent: replyContent,
+        commentTime: Date.now()
+      })
     },
     toDate (num) {
       const date = new Date(num)
@@ -88,37 +111,30 @@ export default {
     async getName (userID) {
       const userProfile = await fb.usersCollection.doc(userID).get()
       const data = await userProfile.data()
-      console.log('Name: ' + data.name)
       return data.name
     },
     getdata () {
       const that = this
       var store = firebase.database().ref('Sell/' + that.productID + '/comments')
       store.on('value', function (snapshot) {
-        var tempcommentlist = []
+        that.commentlist = []
         that.countvalue = snapshot.numChildren()
         snapshot.forEach(function (childSnapshot) {
-          var variable = {}
-          variable.key = childSnapshot.key
-          console.log(variable.key)
-          var commentRef = firebase.database().ref('Comments/' + childSnapshot.key)
+          const variable = {}
+          const commentRef = firebase.database().ref('Comments/' + childSnapshot.key)
           variable.commentUUID = childSnapshot.key
           commentRef.once('value').then(async function (snapshot2) {
             variable.commentContent = snapshot2.val().commentContent
             variable.commentTime = snapshot2.val().commentTime
             variable.userID = snapshot2.val().userID
             variable.userName = await that.getName(variable.userID)
-            tempcommentlist.push(variable)
-            return snapshot2.val().userID
+            that.commentlist.push(variable)
           })
         })
-        that.commentlist = tempcommentlist
       })
-      console.log(this.commentlist)
     },
     handleCurrentChange (val) {
       this.currentpage = val
-      console.log(this.currentpage)
     }
   }
 }
