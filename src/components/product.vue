@@ -143,10 +143,15 @@ export default {
       }
       const that = this
       that.productlist = []
+      var target = []
+      var str = that.searchtarget.replace(/['"/\b\f\n\r\t]/g, '')
+      str = str.replace(/[`~!@#$^&*()=|{}':;',\\[\].<>/?~！@#￥……&*（）——|{}【】'；：""'。，、？]/g, '')
+      // console.log(str)
+      target = str.toLowerCase().split(' ')
       var store = firebase.database().ref('Sell')
       store.orderByChild(sort).once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
-          if (childSnapshot.val().title.toLowerCase().includes(that.searchtarget.toLowerCase()) && childSnapshot.val().amount > 0) {
+          if ((target.length > 2 && childSnapshot.val().title.toLowerCase().includes(target[0]) && childSnapshot.val().title.toLowerCase().includes(target[1]) && childSnapshot.val().title.toLowerCase().includes(target[2])) || (target.length === 2 && childSnapshot.val().title.toLowerCase().includes(target[0]) && childSnapshot.val().title.toLowerCase().includes(target[1])) || (target.length <= 1 && childSnapshot.val().title.toLowerCase().includes(target[0]))) {
             var variable = {}
             var url = []
             variable.key = childSnapshot.key
