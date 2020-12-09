@@ -27,7 +27,7 @@
           <img :src="item.cover" width="100px" height="100px">
         </div>
         <div class="tem">
-          <span>{{item.sumprice}}</span>
+          <span>${{item.sumprice}}</span>
         </div>
       </li>
     </ul>
@@ -80,12 +80,14 @@ export default {
 }
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300&display=swap');
 .show {
   width: 920px;
   height: 100%;
   margin: 0 auto;
   margin-top: 30px;
   text-align: center;
+  font-family: 'Hind', sans-serif;
 }
 .title {
   margin-bottom: 30px;

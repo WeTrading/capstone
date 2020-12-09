@@ -1073,9 +1073,13 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&family=Nerko+One&family=Oxygen&display=swap');
 .box{
   width: 100%;
   height: 100%;
+  font-family: 'Inconsolata', monospace;
+  font-family: 'Nerko One', cursive;
+  font-family: 'Oxygen', sans-serif;
 }
 .login_container{
   background-color: white;

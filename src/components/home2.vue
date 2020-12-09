@@ -53,6 +53,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nerko+One&display=swap');
 .continer{
   height: 100%;
 }
@@ -64,15 +65,16 @@ p{
   font-size: xx-large;
   line-height: 60px;
   float: left;
+  font-family: 'Nerko One', cursive;
 }
 a {
   font-size: large;
   float: right;
   font-weight: bold;
   line-height: 60px;
-  font-family: "Graphik Webfont",-apple-system,BlinkMacSystemFont,"Roboto","Droid Sans","Segoe UI","Helvetica",Arial,sans-serif;
   margin-right: 50px;
   color: rgb(34,34,34);
+  font-family: 'Nerko One', cursive;
 }
 .el-aside{
   width: 200px;

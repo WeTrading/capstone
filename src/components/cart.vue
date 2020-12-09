@@ -200,6 +200,14 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300&display=swap');
+.page-shopping-cart {
+  width: 1000px;
+  font-size: 14px;
+  color: black;
+  margin: 0 auto;
+  font-family: 'Hind', sans-serif;
+}
 .cart-title {
   width: 200px;
   max-height: 200vh;
@@ -207,7 +215,6 @@ export default {
   color: black;
   margin: 0 auto;
   border-bottom: 2px solid rgb(255,108,53);
-  font-family: "Roboto", sans-serif;
   text-align: center;
 }
 .fl{
@@ -215,12 +222,6 @@ export default {
 }
 .fr{
   float: right;
-}
-.page-shopping-cart {
-  width: 1000px;
-  font-size: 14px;
-  color: black;
-  margin: 0 auto;
 }
 .page-shopping-cart .td-product .td-do{
   text-align: center;

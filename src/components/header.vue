@@ -104,6 +104,10 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nerko+One&display=swap');
+*{
+  font-family: 'Nerko One', cursive;
+}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   height: 100%;

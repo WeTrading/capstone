@@ -156,11 +156,13 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@200&family=Lobster&display=swap');
 .detail {
   position: relative;
   width: 1000px;
   height: 500px;
   margin: 30px auto;
+  font-family: 'Libre Franklin', sans-serif;
 }
 .left,.right{
   position: absolute;
@@ -201,9 +203,8 @@ p {
 .description {
   width: 75%;
   text-align: left;
-  font-size: x-large;
-  font-family: "Helvetica Neue";
-  margin: 10px auto;
+  font-size: large;
+  margin: 20px auto;
   padding-left: 20px;
 }
 ul li {
@@ -216,6 +217,9 @@ ul li {
 }
 h1 {
   font-size: x-large;
+}
+h2 {
+  font-family: 'Lobster', cursive;
 }
 .title {
   font-size: x-large;

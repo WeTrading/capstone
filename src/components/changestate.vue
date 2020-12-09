@@ -35,7 +35,7 @@
         </td>
         <td class="last">
           <textarea v-model = "item.description"></textarea>
-          <el-button type="primary" icon="el-icon-edit" @click="modify(item)" class="des"></el-button>
+          <el-button type="primary" icon="el-icon-check" @click="modify(item)" class="des"></el-button>
         </td>
       </tr>
     </table>
@@ -108,9 +108,11 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300&display=swap');
 * {
   padding: 0;
   margin: 0;
+  font-family: 'Hind', sans-serif;
 }
 table {
   width: 1200px;
@@ -144,6 +146,9 @@ th{
   width: 100px;
   margin-right: 20px;
 }
+.el-dropdown-menu {
+  padding: 20px;
+}
 td,th{
   width: 200px;
 }
@@ -157,8 +162,9 @@ textarea{
 }
 .des{
   position: absolute;
-  margin-left: 20px;
-  right: 0;
+  width: 20px;
+  margin-left: 10px;
+  right: 20px;
   top: 35px;
 }
 </style>

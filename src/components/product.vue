@@ -200,6 +200,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&family=Nerko+One&display=swap');
 .el-input {
   width: 400px;
   margin-left: 5px;
@@ -217,6 +218,7 @@ export default {
   height: 100%;
   margin-left: 30px;
   margin-top: 50px;
+  font-family: 'Inconsolata', monospace;
 }
 .goods_continer{
   height: 90%;
