@@ -1,11 +1,9 @@
 <template>
   <el-container class="continer">
-    <el-header>
-      <div>
-        <span>
-          WeTrading Market
-        </span>
-      </div>
+    <el-header class="header">
+      <p>WeTrading Market</p>
+      <a href="#/Login" v-show="!isLogin" class="button">Sign in</a>
+      <a  href="#/product" @click="changelogout" v-show="isLogin" class="button">Logout</a>
     </el-header>
     <el-container>
       <el-aside width="200px">
@@ -20,11 +18,36 @@
 
 <script>
 import Header from './header'
+import Login from './Login'
 export default {
   name: 'home2',
   components: {
     // eslint-disable-next-line vue/no-unused-components
     Header
+  },
+  data: function () {
+    return {
+      log: false
+    }
+  },
+  computed: {
+    isLogin: function () {
+      return this.$store.getters.getIsLogin
+    },
+    current: function () {
+      return this.$store.getters.getCurrent
+    }
+  },
+  methods: {
+    changelogin () {
+      this.log = true
+    },
+    changelogout () {
+      this.log = false
+      this.$store.state.isLogin = false
+      this.$store.dispatch('logout')
+      console.log(this.$store.getters.getIsLogin)
+    }
   }
 }
 </script>
@@ -34,17 +57,27 @@ export default {
   height: 100%;
 }
 .el-header {
-  background-color: #27434d;
-  padding-left: 10px;
-  padding-top: 13px;
+  background-color: white;
+}
+p{
+  color: rgb(255,108,53);
   font-size: xx-large;
-  color: white;
+  line-height: 60px;
+  float: left;
+}
+a {
+  font-size: large;
+  float: right;
+  font-weight: bold;
+  line-height: 60px;
+  font-family: "Graphik Webfont",-apple-system,BlinkMacSystemFont,"Roboto","Droid Sans","Segoe UI","Helvetica",Arial,sans-serif;
+  margin-right: 50px;
+  color: rgb(34,34,34);
 }
 .el-aside{
   width: 200px;
   background-color: white;
 }
-
 .el-main{
   background-color: white;
 }

@@ -38,10 +38,18 @@ export default new Vuex.Store({
     },
     async login ({ dispatch }, form) {
       // sign user in
-      const { user } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
+      await fb.auth.signInWithEmailAndPassword(form.email, form.password)
+        .then((user) => {
+          console.log(user)
+          dispatch('fetchUserProfile', user.user)
+        }
+        )
+        .catch((error) => {
+          console.log(error)
+        })
 
       // fetch user profile and set in state
-      dispatch('fetchUserProfile', user)
+      // dispatch('fetchUserProfile', user)
     },
     async signup ({ dispatch }, form) {
       // sign user up

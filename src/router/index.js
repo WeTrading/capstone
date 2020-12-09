@@ -15,6 +15,7 @@ import Product from '../components/product'
 import ProductDetail from '../components/productdetail'
 import History from '../components/history'
 import Change from '../components/changestate'
+import ResetPassword from '../components/reset'
 import { auth } from '../firebase'
 
 Vue.use(Router)
@@ -54,6 +55,10 @@ const routes = [
   {
     path: '/header',
     component: Header
+  },
+  {
+    path: '/resetPass',
+    component: ResetPassword
   },
   {
     path: '/setting',

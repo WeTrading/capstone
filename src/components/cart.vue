@@ -31,7 +31,7 @@
         </tbody></table>
     </div>
     <div class="cart-product-info">
-      <el-button class="btn-buy fr" round @click="buyitem3">CheckOut</el-button>
+      <el-button class="btn-buy" round @click="buyitem3">CheckOut</el-button>
     </div>
   </div>
 </template>
@@ -201,10 +201,12 @@ export default {
 
 <style scoped>
 .cart-title {
-  max-height: 100vh;
+  width: 200px;
+  max-height: 200vh;
   font-size: xx-large;
-  color: white;
-  background: linear-gradient(-90deg, #6a79cf, #1627c0);
+  color: black;
+  margin: 0 auto;
+  border-bottom: 2px solid rgb(255,108,53);
   font-family: "Roboto", sans-serif;
   text-align: center;
 }
@@ -258,14 +260,14 @@ export default {
   line-height: 50px;
   padding-left: 20px; }
 .page-shopping-cart .cart-product-info .btn-buy {
-  height: 50px;
-  font-size: 20px;
+  height: 40px;
+  font-size: 18px;
   display: block;
   width: 200px;
-  background: linear-gradient(-90deg, #6a79cf, #1627c0);
+  background: rgb(255,108,53);
   color: #ffffff;
   text-align: center;
-  margin-left: 30px; }
+  margin: 0 auto;}
 .page-shopping-cart{
   padding: 20px; }
 .ccdes {

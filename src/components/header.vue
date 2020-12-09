@@ -26,14 +26,6 @@
         <i class="el-icon-date"></i>
         <span slot="title">History</span>
       </el-menu-item>
-      <el-menu-item index="/login" v-show="!isLogin">
-        <i class="el-icon-success"></i>
-        <span slot="title">Login</span>
-      </el-menu-item>
-      <el-menu-item index="/register" v-show="!isLogin">
-        <i class="el-icon-success"></i>
-        <span slot="title">Register</span>
-      </el-menu-item>
       <el-menu-item index="/setting" v-show="isLogin">
         <i class="el-icon-setting"></i>
         <span slot="title">Setting</span>
@@ -41,10 +33,6 @@
       <el-menu-item v-show="isLogin" >
         <i class = "el-icon-user-solid"></i>
         <span slot="title">{{show_user()}}{{username}}</span>
-      </el-menu-item>
-      <el-menu-item index="/" v-show="isLogin" @click="exit">
-        <i class="el-icon-error"></i>
-        <span slot="title">Logout</span>
       </el-menu-item>
 
     </el-menu>

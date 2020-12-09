@@ -4,7 +4,7 @@
       <tr>
         <th class="title1">Product Code</th>
         <th class="title1">Title</th>
-        <th>Status</th>
+        <th>Sold</th>
         <th class="title1">Amount</th>
         <th class="title2">Description</th>
       </tr>

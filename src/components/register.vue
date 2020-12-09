@@ -1,18 +1,9 @@
 <template>
   <div class="box">
     <div class="login_container">
-      <div class = left>
-        <ul>
-          <li>
-            New
-          </li>
-          <li>
-            User
-          </li>
-          <li>
-            Register
-          </li>
-        </ul>
+      <div class="header">
+        <h1>Create Your Account</h1>
+        <p>Register With Student Email</p>
       </div>
       <div class = right>
         <el-form ref = "form" :model = "form" :rules="rules" label-width="50px" class="ruleForm">
@@ -30,7 +21,6 @@
           </el-form-item>
           <el-form-item label="Tel" prop = "telephone">
             <el-input v-model="form.telephone" class="vin"></el-input>
-            <el-button round class="buttonV" @click="submittel()">Verification</el-button>
           </el-form-item>
           <el-form-item label="PWD" prop="password">
             <el-input v-model = "form.password" type="password"></el-input>
@@ -41,12 +31,9 @@
               <el-radio label="Seller"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">Register</el-button>
-            <el-button @click="resetForm('form')">Reset</el-button>
-          </el-form-item>
-
         </el-form>
+        <button type="primary" @click="submitForm('form')">Register</button>
+        <button @click="resetForm('form')">Reset</button>
       </div>
     </div>
   </div>
@@ -1080,9 +1067,6 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
-    },
-    submittel () {
-      alert(Number(this.form.region + this.form.telephone))
     }
   }
 }
@@ -1094,40 +1078,34 @@ export default {
   height: 100%;
 }
 .login_container{
-  background-color: #27434d;
-  width: 600px;
-  height: 500px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
+  background-color: white;
+  width: 350px;
+  height: 650px;
+  margin: 0 auto;
+  border: 1px solid black;
   border-radius: 20px;
-  box-shadow: 0 4px 4px rgba(0,0,0,.4);
+  box-shadow: 0 0px 10px rgba(0,0,0,.4);
+  padding: 20px;
 }
-.login_container .left{
-  width: 150px;
-  height: 100%;
-  float: left;
-}
-.login_container .left ul{
-  padding-top: 50px;
-  padding-left: 0;
-}
-.login_container .left ul li{
-  list-style-type: none;
-  font-family: "Helvetica Neue";
-  font-size: xx-large;
+.login_container .header{
+  width: 100%;
+  height: 70px;
   text-align: left;
-  color: honeydew;
-  line-height: 50px;
+}
+.header h1{
+  font-size: x-large;
+  padding-top: 20px;
+  color: black;
+}
+.header p{
+  color: #888888;
+  padding-left: 5px;
+  font-size: small;
 }
 .login_container .right{
-  width: 450px;
-  height: 100%;
+  width: 100%;
+  height: 550px;
   background-color: white;
-  float: right;
 }
 .login_container .right .ruleForm{
   width: 250px;
@@ -1137,8 +1115,14 @@ export default {
 .login_container .right .ruleForm .vin{
   float: left;
 }
-.login_container .right .ruleForm .buttonV{
-  float: left;
+button{
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid;
+  padding: 5px;
+  text-align: center;
+  background-color: black;
+  color: white;
+  font-size: large;
 }
-
 </style>

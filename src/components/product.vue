@@ -23,31 +23,35 @@
         </el-option>
       </el-select>
       <el-button type="primary" icon="el-icon-search" @click="searchandsort">Search</el-button>
-      <ul class="goods_continer">
-        <li v-for="item in productlist.slice((currentpage-1)*pagesize,currentpage*pagesize)" :key="item.name">
-          <el-card :body-style="{ padding: '0px' }" class = "card">
-            <div class="bg">
-              <el-carousel height="250px" :interval="10000" arrow="always">
-                <el-carousel-item v-for="url in item.href" :key="url">
-                  <img :src="url" width="250px" height="250px">
-                </el-carousel-item>
-              </el-carousel>
-            </div>
-            <div style="padding: 14px;">
-              <router-link :to="'/product/' + item.key" class="btn btn-primary">{{item.title}}</router-link>
-              <div class="clearfix bottom handle">
-                <span>$ {{item.price}}</span>
+      <div class="goods_continer">
+        <ul>
+          <li v-for="item in productlist.slice((currentpage-1)*pagesize,currentpage*pagesize)" :key="item.name">
+            <el-card :body-style="{ padding: '0px' }" class = "card">
+              <div class="bg">
+                <el-carousel height="250px" :interval="10000" arrow="always">
+                  <el-carousel-item v-for="url in item.href" :key="url">
+                    <img :src="url" width="250px" height="250px">
+                  </el-carousel-item>
+                </el-carousel>
               </div>
-            </div>
-          </el-card>
-        </li>
-       </ul>
+              <div style="padding: 14px;">
+                <router-link :to="'/product/' + item.key" class="btn btn-primary">{{item.title}}</router-link>
+                <div class="clearfix bottom handle">
+                  <span>$ {{item.price}}</span>
+                </div>
+              </div>
+            </el-card>
+          </li>
+        </ul>
+      </div>
+      <div class="pagebar">
         <el-pagination
           @current-change="handleCurrentChange"
           :page-size="8"
           layout="prev, pager, next"
           :total="countvalue">
         </el-pagination>
+      </div>
       </div>
 </template>
 
@@ -122,7 +126,7 @@ export default {
         })
       })
       that.countvalue = that.productlist.length
-      // console.log(this.productlist)
+      console.log(this.countvalue)
     },
     searchandsort () {
       var sort = this.attribute
@@ -208,13 +212,14 @@ export default {
   margin-left: 30px;
 }
 .goods{
-  width: 100%;
+  position: relative;
+  width: 1200px;
   height: 100%;
   margin-left: 30px;
   margin-top: 50px;
 }
 .goods_continer{
-  height: 100%;
+  height: 90%;
   margin-top: 50px;
 }
 .goods li{
@@ -246,8 +251,9 @@ export default {
 .handle {
   margin-top: 10px;
 }
-.el-pagination {
-  display: block;
-  margin-left: 400px;
+.pagebar{
+  width: 100px;
+  margin: 0 550px;
 }
+
 </style>

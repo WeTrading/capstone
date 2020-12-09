@@ -1,44 +1,38 @@
 <template>
-<div class="box">
-  <div class="login_container">
-    <div class="header">
-      <H1>WeTrading</H1>
+  <div class="box bg">
+    <div class="login_container">
+      <div class="header">
+        <h1>Sign in</h1>
+        <a href="#/register" @click="changestatus" class="reg">Register</a>
+      </div>
+      <div class="right">
+        <el-form :model = "loginForm" :rules = "rules" ref = "loginForm" label-width="70px" class="form">
+          <el-form-item label="Type" prop="type">
+            <el-select v-model="loginForm.type" placeholder="Please Choose the login Type">
+              <el-option v-for="item in options" :key="item.value" :label="`${item.type}`" :value="item.type"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label=loginForm.type prop="value">
+            <el-input v-model="loginForm.value"></el-input>
+          </el-form-item>
+          <el-form-item label="PWD">
+            <el-input v-model="loginForm.password" type="password"></el-input>
+          </el-form-item>
+        </el-form>
+        <div><button type="primary" @click="login('loginForm')" class="spanbutton">Log In</button></div>
+        <div class="forget">
+          <a href="#/resetPass" @click="changestatus">Forget Your Password?</a>
+        </div>
+      </div>
     </div>
-    <div class="left">
-      <p>WELCOME BACK</p>
-    </div>
-    <div class="right">
-      <el-form :model = "loginForm" :rules = "rules" ref = "loginForm" label-width="80px" class="form">
-        <el-form-item label="Type" prop="type">
-          <el-select v-model="loginForm.type" placeholder="Please Choose the login Type">
-            <el-option v-for="item in options" :key="item.value" :label="`${item.type}`" :value="item.type"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label=loginForm.type prop="value">
-          <el-input v-model="loginForm.value"></el-input>
-        </el-form-item>
-        <el-form-item label="PWD">
-          <el-input v-model="loginForm.password" type="password"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <span class="button">
-            <el-button type="primary" @click="login('loginForm')">LogIn</el-button>
-          </span>
-          <span class="href">
-            <a href="#/empty">Forget Password</a>
-          </span>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="footer"></div>
   </div>
-</div>
 </template>
 
 <script>
 export default {
   data: function () {
     return {
+      islog: true,
       loginForm: {
         type: '',
         value: '',
@@ -49,7 +43,7 @@ export default {
           type: 'Email'
         },
         {
-          type: 'Telephone'
+          type: 'Username'
         }
       ],
       rules: {
@@ -90,6 +84,9 @@ export default {
           return false
         }
       })
+    },
+    changestatus () {
+      this.islog = false
     }
   }
 }
@@ -101,56 +98,68 @@ export default {
   height: 100%;
 }
 .login_container{
-  background-color: #27434d;
-  width: 600px;
+  background-color: white;
+  width: 350px;
   height: 500px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
+  margin: 30px auto;
+  box-sizing: border-box;
+  border: 1px solid black;
   border-radius: 20px;
   box-shadow: 0 4px 4px rgba(0,0,0,.4);
+  padding: 20px;
 }
 .login_container .header{
   width: 100%;
-  height: 100px;
+  height: 70px;
   padding: 0;
-  text-align: center;
+  text-align: left;
 }
 .header h1{
-  padding-top: 20px;
-  color: white;
-}
-.login_container .left{
-  width: 150px;
-  height: 300px;
   float: left;
+  padding-top: 20px;
+  color: black;
 }
-.login_container .left p{
-  padding-top: 50px;
-  padding-left: 10px;
-  color: white;
+.header .reg{
+  font-size: 13px;
+  float: right;
+  margin-right: 20px;
+  margin-top: 15px;
+  line-height: 30px;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}
+.header .reg:hover{
+  font-weight: bold;
+  transform: scale(1.2,1.2);
+  box-shadow: 0px 0px 10px rgba(0,0,0,.4);
 }
 .login_container .right{
-  width: 450px;
-  height: 300px;
+  width: 100%;
+  height: 400px;
   background-color: white;
-  float: right;
-  border-radius: 30px;
-  padding-top: 50px;
+  padding-top: 30px;
   color: #27434d;
 }
 .login_container .right .form{
   width: 300px;
 }
-.button{
-  width: 150px;
+.spanbutton {
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 30px;
+  width: 100%;
+  font-size: large;
   padding: 10px;
 }
-.href{
-  width: 150px;
+.forget{
+  width: 100%;
+  padding-top: 20px;
   text-decoration: none;
+  text-align: center;
+}
+.forget a{
+  width: 100%;
 }
 </style>
