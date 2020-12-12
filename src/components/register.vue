@@ -1048,15 +1048,20 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.form.value)
-          alert('submit!')
-          this.$store.dispatch('signup', {
-            email: this.form.email,
-            password: this.form.password,
-            name: this.form.name,
-            region: this.form.region,
-            telephone: this.form.telephone,
-            type: this.form.type
-          })
+          if (this.form.email.substring(this.form.email.length - 4) === '.edu') {
+            console.log(this.form.email.substring(this.form.email.length - 4))
+            this.$store.dispatch('signup', {
+              email: this.form.email,
+              password: this.form.password,
+              name: this.form.name,
+              region: this.form.region,
+              telephone: this.form.telephone,
+              type: this.form.type
+            })
+            alert('submit!')
+          } else {
+            alert('Email address should has an end with .edu')
+          }
           // this.$router.push('/home')
         //  补充xxxxxx
         } else {
