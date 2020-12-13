@@ -2,6 +2,10 @@
 
   <div>
     <el-menu router default-active="$router.path" class="el-menu-vertical-demo" :collapse="isCollapse">
+      <el-menu-item v-show="isLogin" >
+        <i class = "el-icon-user-solid"></i>
+        <span slot="title">{{show_user()}}{{username}}</span>
+      </el-menu-item>
       <el-menu-item index="/product">
         <i class="el-icon-menu"></i>
         <span slot="title">Store</span>
@@ -29,10 +33,6 @@
       <el-menu-item index="/setting" v-show="isLogin">
         <i class="el-icon-setting"></i>
         <span slot="title">Setting</span>
-      </el-menu-item>
-      <el-menu-item v-show="isLogin" >
-        <i class = "el-icon-user-solid"></i>
-        <span slot="title">{{show_user()}}{{username}}</span>
       </el-menu-item>
 
     </el-menu>
