@@ -2,10 +2,10 @@
   <article class="col-sm-12">
     <div class="detail">
       <div class="left">
-        <el-carousel height="400px" :interval="10000" arrow="always">
-          <el-carousel-item v-for="item in product" :key="item">
+        <el-carousel height="500px" :interval="10000" arrow="always">
+          <el-carousel-item v-for="item in product" :key="item" style="width: 100%">
             <div class="small">
-              <vue-photo-zoom-pro :url="item.href" :scale="3" :width="100"></vue-photo-zoom-pro>
+              <vue-photo-zoom-pro :url="item.href" :scale="3" :width="100" out-zoomer-style = "width: 100%; height: 100%"></vue-photo-zoom-pro>
             </div>
           </el-carousel-item>
         </el-carousel>
@@ -26,8 +26,9 @@
           @click="jump"
           :disabled="judge"
         >
-          <p v-if="!judge">Add to Cart</p>
-          <p v-if="judge">Temporarily Can't Purchase</p>
+          <p v-if="judge===0">Add to Cart</p>
+          <p v-if="judge===1">Transaction Not Allow</p>
+          <p v-if="judge===2">Temporarily Can't Purchase</p>
         </v-btn>
       </div>
     </div>
@@ -58,7 +59,7 @@ export default {
       info: '',
       amount: 0,
       sold: true,
-      judge: true,
+      judge: 0,
       slogan: ['Add to Cart', 'Out of Stock']
     }
   },
@@ -100,10 +101,12 @@ export default {
             that.product.push(variable)
           }
         }
-        if (user === that.userID || that.amount === 0 || that.sold === true) {
-          that.judge = true
+        if (user === that.userID) {
+          that.judge = 1
+        } else if (that.amount === 0 || that.sold === true) {
+          that.judge = 2
         } else {
-          that.judge = false
+          that.judge = 0
         }
       })
     },
@@ -171,6 +174,10 @@ export default {
 .left {
   left: 0px;
   top: 0px;
+  width:400px;
+}
+el-carousel {
+  width:200px;
 }
 .right{
   right: 0px;

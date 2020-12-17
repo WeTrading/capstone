@@ -1,7 +1,6 @@
 <template>
   <div>
-    <a href="#/Register" class="register">Register</a><br>
-    <a href="#/Login" class="login">Login</a>
+    <a href="#/Register" class="register">Register</a> or <a href="#/Login" class="login">Login</a> first
   </div>
 </template>
 

@@ -41,9 +41,6 @@ export default {
       options: [
         {
           type: 'Email'
-        },
-        {
-          type: 'Username'
         }
       ],
       rules: {

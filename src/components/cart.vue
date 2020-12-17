@@ -94,6 +94,7 @@ export default {
     },
     buyitem3 () {
       const that = this
+      that.sumprice = 0
       this.productlist.forEach(function (item) {
         if (item.check) {
           that.sumprice += item.price * item.want

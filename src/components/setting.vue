@@ -16,15 +16,14 @@
       </div>
       <div class = right>
         <el-form  ref = "form" :model = "form" :rules="rules" label-width="50px" class="ruleForm">
-          <el-form-item label="Username" label-width="100px" class="input1">
-            <el-input  v-model="form.name" :placeholder="current.name" :disabled="nflag"></el-input>
+          <el-form-item label="Username" label-width="100px" class="input1" prop="name">
+            <el-input  v-model="form.name" :placeholder="username" :disabled="nflag"></el-input>
           </el-form-item>
           <el-button type="primary" icon="el-icon-edit" circle @click="edit" class="button1"></el-button>
           <el-form-item label="Email" label-width="100px" class="input2">
-            <el-input v-model="form.email" :placeholder="current.email" :disabled="eflag"></el-input>
+            <el-input v-model="form.email" :placeholder="useremail" :disabled="eflag"></el-input>
           </el-form-item>
           <el-button type="primary" icon="el-icon-edit" circle @click="input" class="button2"></el-button>
-
         </el-form>
       </div>
     </div>
@@ -42,9 +41,18 @@ export default {
         name: '',
         email: ''
       },
+      userid: firebase.auth().currentUser.uid,
+      username: '',
+      useremail: firebase.auth().currentUser.email,
       nflag: true,
-      eflag: true
+      eflag: true,
+      rules: {
+        name: [{ min: 8, max: 20, message: 'Length should between 8-20 characters', trigger: 'blur' }]
+      }
     }
+  },
+  async created () {
+    this.username = await this.getName(this.userid)
   },
   computed: {
     isLogin: function () {
@@ -55,9 +63,15 @@ export default {
     }
   },
   methods: {
+    async getName (userID) {
+      const userProfile = await cd.usersCollection.doc(userID).get()
+      const data = await userProfile.data()
+      return data.name
+    },
     edit () {
       if (!this.nflag) {
         const user = firebase.auth().currentUser
+        console.log(user)
         if (user) {
           cd.usersCollection.doc(user.uid).update({ name: this.form.name })
           // this.$store.dispatch('logout')
@@ -69,12 +83,20 @@ export default {
       if (!this.eflag) {
         const user = firebase.auth().currentUser
         if (user) {
-          cd.usersCollection.doc(user.uid).update({ email: this.form.email })
-          user.updateEmail(this.form.email).then(function () {
+          var regemail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.edu)$/
+          if (this.form.email !== '' && regemail.test(this.form.email)) {
+            cd.usersCollection.doc(user.uid).update({ email: this.form.email })
+            user.updateEmail(this.form.email).then(function () {
 
-          }).catch(function (error) {
-            console.log(error)
-          })
+            }).catch(function (error) {
+              console.log(error)
+            })
+          } else {
+            this.$message({
+              message: 'Incorrect Email Format',
+              type: 'error'
+            })
+          }
         }
       }
       this.eflag = !this.eflag

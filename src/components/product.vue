@@ -94,7 +94,7 @@ export default {
       var store = firebase.database().ref('Sell')
       store.on('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
-          if (childSnapshot.val().amount > 0) {
+          if (childSnapshot.val().amount > 0 && !childSnapshot.val().sold) {
             var variable = {}
             var url = []
             variable.key = childSnapshot.key
@@ -156,33 +156,35 @@ export default {
       store.orderByChild(sort).once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
           if ((target.length > 2 && childSnapshot.val().title.toLowerCase().includes(target[0]) && childSnapshot.val().title.toLowerCase().includes(target[1]) && childSnapshot.val().title.toLowerCase().includes(target[2])) || (target.length === 2 && childSnapshot.val().title.toLowerCase().includes(target[0]) && childSnapshot.val().title.toLowerCase().includes(target[1])) || (target.length <= 1 && childSnapshot.val().title.toLowerCase().includes(target[0]))) {
-            var variable = {}
-            var url = []
-            variable.key = childSnapshot.key
-            variable.currentindex = 0
-            var pro
-            for (pro in childSnapshot.val()) {
-              if (pro === 'userID') {
-                variable.userid = childSnapshot.val()[pro]
-              } else if (pro === 'title') {
-                variable.title = childSnapshot.val()[pro]
-              } else if (pro === 'description') {
-                variable.description = childSnapshot.val()[pro]
-              } else if (pro === 'price') {
-                variable.price = childSnapshot.val()[pro]
-              } else if (pro !== 'comments' && pro !== 'sold' && pro !== 'amount' && pro !== 'uploadTime') {
-                if (childSnapshot.val()[pro].highlight === 1) {
-                  url.splice(0, 0, childSnapshot.val()[pro].imageURL)
-                  variable.cover = childSnapshot.val()[pro].imageURL
-                  variable.name = childSnapshot.val()[pro].name
-                  variable.highlight = childSnapshot.val()[pro].highlight
-                } else {
-                  url.push(childSnapshot.val()[pro].imageURL)
+            if (childSnapshot.val().amount > 0 && !childSnapshot.val().sold) {
+              var variable = {}
+              var url = []
+              variable.key = childSnapshot.key
+              variable.currentindex = 0
+              var pro
+              for (pro in childSnapshot.val()) {
+                if (pro === 'userID') {
+                  variable.userid = childSnapshot.val()[pro]
+                } else if (pro === 'title') {
+                  variable.title = childSnapshot.val()[pro]
+                } else if (pro === 'description') {
+                  variable.description = childSnapshot.val()[pro]
+                } else if (pro === 'price') {
+                  variable.price = childSnapshot.val()[pro]
+                } else if (pro !== 'comments' && pro !== 'sold' && pro !== 'amount' && pro !== 'uploadTime') {
+                  if (childSnapshot.val()[pro].highlight === 1) {
+                    url.splice(0, 0, childSnapshot.val()[pro].imageURL)
+                    variable.cover = childSnapshot.val()[pro].imageURL
+                    variable.name = childSnapshot.val()[pro].name
+                    variable.highlight = childSnapshot.val()[pro].highlight
+                  } else {
+                    url.push(childSnapshot.val()[pro].imageURL)
+                  }
                 }
               }
+              variable.href = url
+              that.productlist.push(variable)
             }
-            variable.href = url
-            that.productlist.push(variable)
           }
         })
       })

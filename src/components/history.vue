@@ -70,7 +70,7 @@ export default {
               }
             }
             productdetails.title = dbshot.val().title
-            productdetails.sumprice = dbshot.val().price * productdetails.amount
+            productdetails.sumprice = (dbshot.val().price * productdetails.amount).toFixed(2)
           })
           that.data.push(productdetails)
         })

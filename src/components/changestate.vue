@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table v-for="item in pro" :key="item.key">
+    <table>
       <tr>
         <th class="title1">Product Code</th>
         <th class="title1">Title</th>
@@ -8,7 +8,7 @@
         <th class="title1">Amount</th>
         <th class="title2">Description</th>
       </tr>
-      <tr>
+      <tr v-for="item in pro" :key="item.key">
         <td>{{item.key}}</td>
         <td>
             <el-input
@@ -93,15 +93,19 @@ export default {
     },
     handleclick (status, item) {
       firebase.database().ref('Sell/' + item.key).update({ sold: status })
+      this.$router.replace({ path: '/product/' + item.key })
     },
     changetitle (item) {
       firebase.database().ref('Sell/' + item.key).update({ title: item.title })
+      this.$router.replace({ path: '/product/' + item.key })
     },
     changeamount (item) {
       firebase.database().ref('Sell/' + item.key).update({ amount: item.amount })
+      this.$router.replace({ path: '/product/' + item.key })
     },
     modify (item) {
       firebase.database().ref('Sell/' + item.key).update({ description: item.description })
+      this.$router.replace({ path: '/product/' + item.key })
     }
   }
 }
